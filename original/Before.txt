@@ -1,0 +1,5 @@
+<HTML><HEAD><TITLE>まさお コンストラクション</TITLE></HEAD>
+<BODY BGCOLOR="silver">
+<CENTER>
+<APPLET CODE="MasaoConstruction" WIDTH="512" HEIGHT="320" ARCHIVE="mc_c.zip">
+

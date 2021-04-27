@@ -1,0 +1,125 @@
+<html>
+<head>
+<title>まさおメーカーSP</title>
+</head>
+<body bgcolor="lime"text="blue">
+
+<hr>
+<a href="http://www.hpmix.com/home/yappy">トップページ</a><br>
+<a href="/cgi-bin/mycgi/idea.htm">アイデア募集</a><br>
+<a href="http://free.has-u.co.jp/cgi-bin/free/hobby/u-bbs.cgi?room=akuruna">掲示板</a><br>
+<a href="/index.html">オリジナルウィルスボタン</a>
+<hr>
+
+<!--JavaScriptをなめんなあぁぁぁ!!!!!-->
+<script language="JavaScript">
+<!--
+function writeMap(){				//テストプレイ
+	var data=document.MasaoMakerSP.makeHTML();
+	if(document.test.graphics.selectedIndex==1){
+		data=data.replace("title.gif","gra_unyo/title.gif");
+		data=data.replace("pattern.gif","gra_unyo/pattern.gif");
+	}else if(document.test.graphics.selectedIndex==2){
+		data=data.replace("title.gif","gra_kame/title.gif");
+		data=data.replace("pattern.gif","gra_kame/pattern.gif");
+	}
+	var win=window.open("","testplay",
+		"toolbar=no,location=no,directories=no,status=no,menubar=no,resizable=no,width=550,height=400");
+	win.document.open();
+	win.document.write(data);
+	win.document.close();
+}
+function happyo(){					//発表
+	var win=window.open("ShowEveryone.htm","happyo","");
+}
+-->
+</script>
+
+<center><h2>～まさおメーカーSP～</h2></center>
+<center>
+<applet archive="MasaoMakerSP.jar"code="MasaoMakerSP"width="500"height="400"name="MasaoMakerSP">
+	<param name="image_file"value="makerpat.gif">
+	<param name="before"value="Before.txt">
+	<param name="after"value="After.txt">
+	<param name="chara_data"value="CharaData.txt">
+	<param name="setting_data"value="SettingData.txt">
+</applet>
+</center>
+
+<form name="test">
+	<input type="button"value="テストプレイ"onClick="writeMap()">
+	<select name="graphics">
+		<option value="masao">スーパーまさお
+		<option value="unyo">スーパーうにょうにょ
+		<option value="kame">スーパーカメさん
+	</select><br>
+	<a href="/cgi-bin/show/seemaked.cgi"target="_blank">みんなの作品を見る</a><br>
+	<input type="button"value="みんなに発表!"onClick="happyo()">
+</form>
+
+<h3>概要</h3>
+<p>これは福田直人様がお作りになられた「まさお」の作成を、<br>
+文字を見るだけの頭がおかしくなるような作業から一転、グラフィカルで楽しく、快適な作業に変えるために<br>
+作られたアプレットです。<br>
+<br>
+<font color="red">管理人が旅行中にパソコンに保存してあった他のデータとともにこれのソースが消えたので、<br>
+復活&バージョンアップは絶望視されていましたが、この度、見事に復活しました。</font><br>
+
+<hr>
+<h3>ノーマル→SPでの主な変更点</h3>
+<ul>
+	<li><font color="red">ボスの攻撃やジャンプ台など詳細設定ができるようになった!</font></li>
+	<li><font color="red">出力!でHTMLを全部出力できるようになった!</font></li>
+	<li>マップ上でドラッグすることで配置できるようになった!</li>
+	<li>消すのはShiftになった!(適当に決めたら前回と違ってた)</li>
+</ul>
+<hr>
+
+<h3>使い方</h3>
+<br>
+リストから置きたいものを選んで、左上の好きなところでクリックしてください。<br>
+Shiftキーを押しながらクリックするとそこを「何もなし」にします。<br><br>
+
+マップは全部で30×180と、とても1画面では表示し切れません。<br>
+なので、3×18に分割してあります。<br>
+画面右下に表示されるので確認してください。<br>
+やじるしボタンで移動します。<br>
+<br>
+「メニュー呼び出し」を押すと、新ウィンドウが開いて、便利な機能が使えます。<br>
+「セーブ」を選ぶとダイアログにセーブデータを出力します。<br>
+これをコピーして保存しておけば、<br>
+「ロード」で出てくるダイアログに貼り付けて「OK!ロード開始!」を押すことによって、前回の続きから製作を再開することができます。<br><br>
+
+できあがったら、「出力」を押してください。<br>
+左下のテキストエリアに出力されます。<br>
+自動的にすべて選択されるので、コピーしてください。
+テキストエディタにさっきコピーしたのを貼り付けてまさおのセット(mc_c.zipなど)があるフォルダに保存してください。<br><br><hr><br><br>
+
+まさおは、Javaアプレットです。<br>
+Javaは、さまざまな環境(OSの違いなど)で動作する<font color="red">マルチプラットフォーム</font>が特徴です。<br>
+つまり、まさおはWindowsでもMacでもLinuxでも動くのです。<br>
+よって、私は、<font color="red">まさお開発ツールが決してWindows専用であってはならない</font>と考えます。<br>
+例えば、Macにはない右クリックは使わないようにしています。<br>
+ただ、すべての環境で正常に動作させるのは非常に難しいです。<br>
+このアプレットを使うにあたって、次を読んでおいてください。<br><br><hr><br><br>
+
+OS,バージョンの違いなどによって、コピーなどがキーボード・ショートカットからしか利用できない場合があります。<br>
+そこで、次を参考にしてください。<br><br>
+
+<table border=1>
+<tr><td><br></td>		<td>Windows,Linux</td>	<td>Mac</td>		</tr>
+<tr><td>コピー</td>		<td>Ctrl+C</td>			<td>Command+C</td>	</tr>
+<tr><td>貼り付け</td>	<td>Ctrl+V</td>			<td>Command+V</td>	</tr>
+<tr><td>すべて選択</td>	<td>Ctrl+A</td>			<td>Command+A</td>	</tr>
+</table>
+</p>
+
+<hr>
+<a href="http://www.hpmix.com/home/yappy">トップページ</a><br>
+<a href="/cgi-bin/mycgi/idea.htm">アイデア募集</a><br>
+<a href="http://free.has-u.co.jp/cgi-bin/free/hobby/u-bbs.cgi?room=akuruna">掲示板</a><br>
+<a href="/index.html">オリジナルウィルスボタン</a>
+<hr>
+
+</body>
+</html>

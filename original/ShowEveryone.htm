@@ -1,0 +1,38 @@
+<html>
+<head>
+<title>あなたのまさおを発表しませんか</title>
+<script language="JavaScript">
+function getHTML(){
+	document.form.source.value=opener.document.MasaoMakerSP.makeHTML();
+}
+function check(){
+	if(document.form.source.value==""){
+		alert("このページがまさおメーカーSPのページから呼び出されていないか、\nブラウザがシステムに対応していません。");
+		return false;
+	}else if(document.form.caption.value==""){
+		alert("題名は必須項目です。");
+		return false;
+	}else if(document.form.name.value==""){
+		alert("名前は必須項目です。");
+		return false;
+	}
+}
+</script>
+</head>
+
+<body onLoad="getHTML()">
+
+<form name="form"action="/cgi-bin/show/showeveryone.cgi"method="POST"onSubmit="return check()">
+	題名(必須):            <input type="text"name="caption"><br>
+	名前(必須):            <input type="text"name="name"><br>
+	メールアドレス(省略可):<input type="text"name="mail"><br>
+	HPアドレス(省略可):    <input type="text"name="url"><br>
+	コメント(省略可):      <input type="text"name="mes"><br>
+	↓発表するソースです。<br>
+	<textarea cols="100"rows="30"name="source"readonly></textarea><br>
+	これでいいですか?重複登録は禁止です。<br>
+	<input type="submit" value="送信!">
+</form>
+
+</body>
+</html>
