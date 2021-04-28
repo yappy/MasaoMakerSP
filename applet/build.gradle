@@ -22,6 +22,8 @@ sourceSets {
         }
         resources {
             srcDir '../original'
+            include '*.gif'
+            include '*.txt'
         }
     }
 }
