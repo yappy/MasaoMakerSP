@@ -8,7 +8,10 @@ public class App {
         return "Hello World!";
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println(new App().getGreeting());
+
+		Class cls = Class.forName("MasaoMakerSP");
+		System.out.println(cls.newInstance());
     }
 }
