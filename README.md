@@ -12,9 +12,26 @@ Gradle 8.11.1
 最近の Java はよく分からないので諦めない心が重要。
 
 ```sh
-# 確認環境 (debian bookworm) では openjdk-17-jdk-headless
+# 確認環境 (debian bookworm) では openjdk-17-jre-headless
+sudo apt install default-jre-headless
+# だめだったらこっち
 sudo apt install default-jdk-headless
 java -version
+# GUI が入っていないので、実行には headless でないものが必要です
+```
+
+最近は指定バージョンがインストールされていればそれを使い、
+無ければ自動でダウンロードしてくれるようになったらしい。
+でもなんかいい加減なバージョンを指定すると事故る気がするので
+以下を自分の JDK version に合わせるか、そもそもこの指定を消してください(適当)。
+
+```groovy
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 ```
 
 (準備がうまくいっていれば) gradlew スクリプトが全て自動でやってくれます。
@@ -86,4 +103,12 @@ git diff
 ```sh
 ./gradlew wrapper
 git diff
+```
+
+新しいプロジェクトテンプレートを確認
+
+```sh
+mkdir test
+cd test
+../gradlew init
 ```
