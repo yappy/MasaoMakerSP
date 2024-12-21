@@ -91,6 +91,13 @@ appletviewer が入っている古い JRE をインストールして実行し�
 # とか
 ```
 
+```sh
+# 確認
+git clean -nxd
+# 全部消してきれいにする
+git clean -fxd
+```
+
 ## Gradle のアップデート
 
 ```sh
