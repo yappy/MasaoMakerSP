@@ -59,8 +59,8 @@ gradlew.bat build
 
 ## 実行方法
 
-appletviewer が入っている古い JRE をインストールして実行してください。。
-新しい環境では実行方法がありません。
+appletviewer が入っている古い JRE をインストールして実行してください。
+新しい環境では実行方法がありません……。
 
 ## Future Work
 
@@ -119,3 +119,28 @@ mkdir test
 cd test
 ../gradlew init
 ```
+
+## ライセンスについて
+
+### 正男コンストラクション
+
+以下、およびそれと同一ファイルは福田直人様の著作物です。
+title.gif にある「このゲームは、転載自由です。」のメッセージの他は
+一般の著作権法に準じます。
+
+* original/
+  * mc_c.zip
+    * コンパイル済み .class のみ。ソース公開はなし。
+  * title.gif
+  * pattern.gif
+  * ending.gif
+  * gameover.gif
+  * chizu.gif
+  * makerpat.gif
+    * こちらはオリジナルには含まれませんが、まさおメーカーがマップを描画するために
+      私が pattern.gif の一部を抜き出して並べ替えたものです。
+    * 私の二次著作物としては認められないと思います。
+
+### それ以外
+
+MIT license: [LICENSE](./LICENSE)
