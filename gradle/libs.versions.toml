@@ -4,7 +4,9 @@
 [versions]
 guava = "33.2.1-jre"
 junit = "4.13.2"
+javassist = "3.12.1.GA"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit = { module = "junit:junit", version.ref = "junit" }
+javassist = { module = "javassist:javassist", version.ref = "javassist" }

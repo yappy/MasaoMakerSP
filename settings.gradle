@@ -15,3 +15,4 @@ plugins {
 rootProject.name = 'MasaoMakerSP'
 include('applet')
 include('app')
+include('mccport')
