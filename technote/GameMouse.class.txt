@@ -1,0 +1,136 @@
+Classfile /home/yappy/MasaoMakerSP/mccport/src/main/resources/GameMouse.class
+  Last modified Dec 23, 2024; size 654 bytes
+  SHA-256 checksum 4d7ce20688358d284cf6bf7da7ff64e1789b6c1a0d52cff9b6f4592257d623ef
+  Compiled from "MasaoConstruction.java"
+class GameMouse extends java.awt.event.MouseAdapter
+  minor version: 3
+  major version: 45
+  flags: (0x0020) ACC_SUPER
+  this_class: #8                          // GameMouse
+  super_class: #9                         // java/awt/event/MouseAdapter
+  interfaces: 0, fields: 3, methods: 4, attributes: 1
+Constant pool:
+   #1 = Methodref          #9.#25         // java/awt/event/MouseAdapter."<init>":()V
+   #2 = Methodref          #8.#26         // GameMouse.init:()V
+   #3 = Fieldref           #8.#27         // GameMouse.button_f:Z
+   #4 = Fieldref           #8.#28         // GameMouse.click_x:I
+   #5 = Fieldref           #8.#29         // GameMouse.click_y:I
+   #6 = Methodref          #30.#31        // java/awt/event/MouseEvent.getX:()I
+   #7 = Methodref          #30.#32        // java/awt/event/MouseEvent.getY:()I
+   #8 = Class              #33            // GameMouse
+   #9 = Class              #34            // java/awt/event/MouseAdapter
+  #10 = Utf8               button_f
+  #11 = Utf8               Z
+  #12 = Utf8               click_x
+  #13 = Utf8               I
+  #14 = Utf8               click_y
+  #15 = Utf8               <init>
+  #16 = Utf8               ()V
+  #17 = Utf8               Code
+  #18 = Utf8               LineNumberTable
+  #19 = Utf8               init
+  #20 = Utf8               mousePressed
+  #21 = Utf8               (Ljava/awt/event/MouseEvent;)V
+  #22 = Utf8               mouseReleased
+  #23 = Utf8               SourceFile
+  #24 = Utf8               MasaoConstruction.java
+  #25 = NameAndType        #15:#16        // "<init>":()V
+  #26 = NameAndType        #19:#16        // init:()V
+  #27 = NameAndType        #10:#11        // button_f:Z
+  #28 = NameAndType        #12:#13        // click_x:I
+  #29 = NameAndType        #14:#13        // click_y:I
+  #30 = Class              #35            // java/awt/event/MouseEvent
+  #31 = NameAndType        #36:#37        // getX:()I
+  #32 = NameAndType        #38:#37        // getY:()I
+  #33 = Utf8               GameMouse
+  #34 = Utf8               java/awt/event/MouseAdapter
+  #35 = Utf8               java/awt/event/MouseEvent
+  #36 = Utf8               getX
+  #37 = Utf8               ()I
+  #38 = Utf8               getY
+{
+  boolean button_f;
+    descriptor: Z
+    flags: (0x0000)
+
+  int click_x;
+    descriptor: I
+    flags: (0x0000)
+
+  int click_y;
+    descriptor: I
+    flags: (0x0000)
+
+  public GameMouse();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=1, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/awt/event/MouseAdapter."<init>":()V
+         4: aload_0
+         5: invokevirtual #2                  // Method init:()V
+         8: return
+      LineNumberTable:
+        line 491: 0
+        line 495: 4
+        line 496: 8
+
+  void init();
+    descriptor: ()V
+    flags: (0x0000)
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0
+         1: iconst_0
+         2: putfield      #3                  // Field button_f:Z
+         5: aload_0
+         6: iconst_0
+         7: putfield      #4                  // Field click_x:I
+        10: aload_0
+        11: iconst_0
+        12: putfield      #5                  // Field click_y:I
+        15: return
+      LineNumberTable:
+        line 503: 0
+        line 504: 5
+        line 505: 10
+        line 506: 15
+
+  public void mousePressed(java.awt.event.MouseEvent);
+    descriptor: (Ljava/awt/event/MouseEvent;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: iconst_1
+         2: putfield      #3                  // Field button_f:Z
+         5: aload_0
+         6: aload_1
+         7: invokevirtual #6                  // Method java/awt/event/MouseEvent.getX:()I
+        10: putfield      #4                  // Field click_x:I
+        13: aload_0
+        14: aload_1
+        15: invokevirtual #7                  // Method java/awt/event/MouseEvent.getY:()I
+        18: putfield      #5                  // Field click_y:I
+        21: return
+      LineNumberTable:
+        line 514: 0
+        line 517: 5
+        line 518: 13
+        line 519: 21
+
+  public void mouseReleased(java.awt.event.MouseEvent);
+    descriptor: (Ljava/awt/event/MouseEvent;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: iconst_0
+         2: putfield      #3                  // Field button_f:Z
+         5: return
+      LineNumberTable:
+        line 524: 0
+        line 525: 5
+}
+SourceFile: "MasaoConstruction.java"

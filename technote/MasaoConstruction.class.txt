@@ -1,0 +1,550 @@
+Classfile /home/yappy/MasaoMakerSP/mccport/src/main/resources/MasaoConstruction.class
+  Last modified Dec 23, 2024; size 2721 bytes
+  SHA-256 checksum c2fe3ff10f94fb462c62c140a9e94bb56f69f9ce1a404c8b8535ceeb66fc9e3f
+  Compiled from "MasaoConstruction.java"
+public class MasaoConstruction extends java.applet.Applet implements java.lang.Runnable
+  minor version: 3
+  major version: 45
+  flags: (0x0021) ACC_PUBLIC, ACC_SUPER
+  this_class: #49                         // MasaoConstruction
+  super_class: #50                        // java/applet/Applet
+  interfaces: 1, fields: 7, methods: 9, attributes: 1
+Constant pool:
+    #1 = Methodref          #50.#80       // java/applet/Applet."<init>":()V
+    #2 = Fieldref           #49.#81       // MasaoConstruction.th_interval:I
+    #3 = Fieldref           #49.#82       // MasaoConstruction.th_jm:I
+    #4 = Fieldref           #49.#83       // MasaoConstruction.th:Ljava/lang/Thread;
+    #5 = Class              #84           // java/lang/Thread
+    #6 = Methodref          #5.#85        // java/lang/Thread."<init>":(Ljava/lang/Runnable;)V
+    #7 = Methodref          #5.#86        // java/lang/Thread.start:()V
+    #8 = String             #87           // game_speed
+    #9 = Methodref          #50.#88       // java/applet/Applet.getParameter:(Ljava/lang/String;)Ljava/lang/String;
+   #10 = Methodref          #89.#90       // java/lang/Integer.valueOf:(Ljava/lang/String;)Ljava/lang/Integer;
+   #11 = Methodref          #89.#91       // java/lang/Integer.intValue:()I
+   #12 = Class              #92           // java/lang/NumberFormatException
+   #13 = Fieldref           #49.#93       // MasaoConstruction.gg:LGameGraphics;
+   #14 = Fieldref           #28.#94       // GameGraphics.os_img:Ljava/awt/Image;
+   #15 = Methodref          #95.#96       // java/awt/Graphics.drawImage:(Ljava/awt/Image;IILjava/awt/image/ImageObserver;)Z
+   #16 = Methodref          #49.#97       // MasaoConstruction.paint:(Ljava/awt/Graphics;)V
+   #17 = Methodref          #49.#98       // MasaoConstruction.init_j:()V
+   #18 = Fieldref           #49.#99       // MasaoConstruction.mp:LMainProgram;
+   #19 = Methodref          #47.#86       // MainProgram.start:()V
+   #20 = Long               70l
+   #22 = Methodref          #5.#100       // java/lang/Thread.sleep:(J)V
+   #23 = Fieldref           #47.#101      // MainProgram.ml_mode:I
+   #24 = Methodref          #47.#102      // MainProgram.mL100:()V
+   #25 = Methodref          #47.#103      // MainProgram.mainLoop:()V
+   #26 = Methodref          #104.#105     // java/awt/Component.repaint:()V
+   #27 = Class              #106          // java/lang/Exception
+   #28 = Class              #107          // GameGraphics
+   #29 = Methodref          #28.#108      // GameGraphics."<init>":(Ljava/applet/Applet;)V
+   #30 = Fieldref           #109.#110     // java/awt/Color.black:Ljava/awt/Color;
+   #31 = Methodref          #28.#111      // GameGraphics.setBackcolor:(Ljava/awt/Color;)V
+   #32 = String             #112          // filename_title
+   #33 = Methodref          #28.#113      // GameGraphics.addListImage:(ILjava/lang/String;)V
+   #34 = String             #114          // filename_ending
+   #35 = String             #115          // filename_gameover
+   #36 = String             #116          // stage_select
+   #37 = String             #117          // filename_chizu
+   #38 = Methodref          #28.#118      // GameGraphics.loadImage:()V
+   #39 = Class              #119          // GameMouse
+   #40 = Methodref          #39.#80       // GameMouse."<init>":()V
+   #41 = Fieldref           #49.#120      // MasaoConstruction.gm:LGameMouse;
+   #42 = Methodref          #104.#121     // java/awt/Component.addMouseListener:(Ljava/awt/event/MouseListener;)V
+   #43 = Class              #122          // GameKey
+   #44 = Methodref          #43.#80       // GameKey."<init>":()V
+   #45 = Fieldref           #49.#123      // MasaoConstruction.gk:LGameKey;
+   #46 = Methodref          #104.#124     // java/awt/Component.addKeyListener:(Ljava/awt/event/KeyListener;)V
+   #47 = Class              #125          // MainProgram
+   #48 = Methodref          #47.#126      // MainProgram."<init>":(LGameGraphics;LGameMouse;LGameKey;)V
+   #49 = Class              #127          // MasaoConstruction
+   #50 = Class              #128          // java/applet/Applet
+   #51 = Class              #129          // java/lang/Runnable
+   #52 = Utf8               th
+   #53 = Utf8               Ljava/lang/Thread;
+   #54 = Utf8               th_interval
+   #55 = Utf8               I
+   #56 = Utf8               th_jm
+   #57 = Utf8               gg
+   #58 = Utf8               LGameGraphics;
+   #59 = Utf8               gm
+   #60 = Utf8               LGameMouse;
+   #61 = Utf8               gk
+   #62 = Utf8               LGameKey;
+   #63 = Utf8               mp
+   #64 = Utf8               LMainProgram;
+   #65 = Utf8               <init>
+   #66 = Utf8               ()V
+   #67 = Utf8               Code
+   #68 = Utf8               LineNumberTable
+   #69 = Utf8               init
+   #70 = Utf8               start
+   #71 = Utf8               stop
+   #72 = Utf8               destroy
+   #73 = Utf8               paint
+   #74 = Utf8               (Ljava/awt/Graphics;)V
+   #75 = Utf8               update
+   #76 = Utf8               run
+   #77 = Utf8               init_j
+   #78 = Utf8               SourceFile
+   #79 = Utf8               MasaoConstruction.java
+   #80 = NameAndType        #65:#66       // "<init>":()V
+   #81 = NameAndType        #54:#55       // th_interval:I
+   #82 = NameAndType        #56:#55       // th_jm:I
+   #83 = NameAndType        #52:#53       // th:Ljava/lang/Thread;
+   #84 = Utf8               java/lang/Thread
+   #85 = NameAndType        #65:#130      // "<init>":(Ljava/lang/Runnable;)V
+   #86 = NameAndType        #70:#66       // start:()V
+   #87 = Utf8               game_speed
+   #88 = NameAndType        #131:#132     // getParameter:(Ljava/lang/String;)Ljava/lang/String;
+   #89 = Class              #133          // java/lang/Integer
+   #90 = NameAndType        #134:#135     // valueOf:(Ljava/lang/String;)Ljava/lang/Integer;
+   #91 = NameAndType        #136:#137     // intValue:()I
+   #92 = Utf8               java/lang/NumberFormatException
+   #93 = NameAndType        #57:#58       // gg:LGameGraphics;
+   #94 = NameAndType        #138:#139     // os_img:Ljava/awt/Image;
+   #95 = Class              #140          // java/awt/Graphics
+   #96 = NameAndType        #141:#142     // drawImage:(Ljava/awt/Image;IILjava/awt/image/ImageObserver;)Z
+   #97 = NameAndType        #73:#74       // paint:(Ljava/awt/Graphics;)V
+   #98 = NameAndType        #77:#66       // init_j:()V
+   #99 = NameAndType        #63:#64       // mp:LMainProgram;
+  #100 = NameAndType        #143:#144     // sleep:(J)V
+  #101 = NameAndType        #145:#55      // ml_mode:I
+  #102 = NameAndType        #146:#66      // mL100:()V
+  #103 = NameAndType        #147:#66      // mainLoop:()V
+  #104 = Class              #148          // java/awt/Component
+  #105 = NameAndType        #149:#66      // repaint:()V
+  #106 = Utf8               java/lang/Exception
+  #107 = Utf8               GameGraphics
+  #108 = NameAndType        #65:#150      // "<init>":(Ljava/applet/Applet;)V
+  #109 = Class              #151          // java/awt/Color
+  #110 = NameAndType        #152:#153     // black:Ljava/awt/Color;
+  #111 = NameAndType        #154:#155     // setBackcolor:(Ljava/awt/Color;)V
+  #112 = Utf8               filename_title
+  #113 = NameAndType        #156:#157     // addListImage:(ILjava/lang/String;)V
+  #114 = Utf8               filename_ending
+  #115 = Utf8               filename_gameover
+  #116 = Utf8               stage_select
+  #117 = Utf8               filename_chizu
+  #118 = NameAndType        #158:#66      // loadImage:()V
+  #119 = Utf8               GameMouse
+  #120 = NameAndType        #59:#60       // gm:LGameMouse;
+  #121 = NameAndType        #159:#160     // addMouseListener:(Ljava/awt/event/MouseListener;)V
+  #122 = Utf8               GameKey
+  #123 = NameAndType        #61:#62       // gk:LGameKey;
+  #124 = NameAndType        #161:#162     // addKeyListener:(Ljava/awt/event/KeyListener;)V
+  #125 = Utf8               MainProgram
+  #126 = NameAndType        #65:#163      // "<init>":(LGameGraphics;LGameMouse;LGameKey;)V
+  #127 = Utf8               MasaoConstruction
+  #128 = Utf8               java/applet/Applet
+  #129 = Utf8               java/lang/Runnable
+  #130 = Utf8               (Ljava/lang/Runnable;)V
+  #131 = Utf8               getParameter
+  #132 = Utf8               (Ljava/lang/String;)Ljava/lang/String;
+  #133 = Utf8               java/lang/Integer
+  #134 = Utf8               valueOf
+  #135 = Utf8               (Ljava/lang/String;)Ljava/lang/Integer;
+  #136 = Utf8               intValue
+  #137 = Utf8               ()I
+  #138 = Utf8               os_img
+  #139 = Utf8               Ljava/awt/Image;
+  #140 = Utf8               java/awt/Graphics
+  #141 = Utf8               drawImage
+  #142 = Utf8               (Ljava/awt/Image;IILjava/awt/image/ImageObserver;)Z
+  #143 = Utf8               sleep
+  #144 = Utf8               (J)V
+  #145 = Utf8               ml_mode
+  #146 = Utf8               mL100
+  #147 = Utf8               mainLoop
+  #148 = Utf8               java/awt/Component
+  #149 = Utf8               repaint
+  #150 = Utf8               (Ljava/applet/Applet;)V
+  #151 = Utf8               java/awt/Color
+  #152 = Utf8               black
+  #153 = Utf8               Ljava/awt/Color;
+  #154 = Utf8               setBackcolor
+  #155 = Utf8               (Ljava/awt/Color;)V
+  #156 = Utf8               addListImage
+  #157 = Utf8               (ILjava/lang/String;)V
+  #158 = Utf8               loadImage
+  #159 = Utf8               addMouseListener
+  #160 = Utf8               (Ljava/awt/event/MouseListener;)V
+  #161 = Utf8               addKeyListener
+  #162 = Utf8               (Ljava/awt/event/KeyListener;)V
+  #163 = Utf8               (LGameGraphics;LGameMouse;LGameKey;)V
+{
+  java.lang.Thread th;
+    descriptor: Ljava/lang/Thread;
+    flags: (0x0000)
+
+  int th_interval;
+    descriptor: I
+    flags: (0x0000)
+
+  int th_jm;
+    descriptor: I
+    flags: (0x0000)
+
+  GameGraphics gg;
+    descriptor: LGameGraphics;
+    flags: (0x0000)
+
+  GameMouse gm;
+    descriptor: LGameMouse;
+    flags: (0x0000)
+
+  GameKey gk;
+    descriptor: LGameKey;
+    flags: (0x0000)
+
+  MainProgram mp;
+    descriptor: LMainProgram;
+    flags: (0x0000)
+
+  public MasaoConstruction();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0
+         1: invokespecial #1                  // Method java/applet/Applet."<init>":()V
+         4: aload_0
+         5: bipush        70
+         7: putfield      #2                  // Field th_interval:I
+        10: aload_0
+        11: bipush        10
+        13: putfield      #3                  // Field th_jm:I
+        16: return
+      LineNumberTable:
+        line 25: 0
+        line 30: 4
+        line 31: 10
+        line 25: 16
+
+  public void init();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=0, locals=1, args_size=1
+         0: return
+      LineNumberTable:
+        line 52: 0
+
+  public void start();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=4, locals=3, args_size=1
+         0: aload_0
+         1: getfield      #4                  // Field th:Ljava/lang/Thread;
+         4: ifnonnull     26
+         7: aload_0
+         8: new           #5                  // class java/lang/Thread
+        11: dup
+        12: aload_0
+        13: invokespecial #6                  // Method java/lang/Thread."<init>":(Ljava/lang/Runnable;)V
+        16: putfield      #4                  // Field th:Ljava/lang/Thread;
+        19: aload_0
+        20: getfield      #4                  // Field th:Ljava/lang/Thread;
+        23: invokevirtual #7                  // Method java/lang/Thread.start:()V
+        26: aload_0
+        27: ldc           #8                  // String game_speed
+        29: invokevirtual #9                  // Method java/applet/Applet.getParameter:(Ljava/lang/String;)Ljava/lang/String;
+        32: astore_1
+        33: aload_0
+        34: aload_1
+        35: invokestatic  #10                 // Method java/lang/Integer.valueOf:(Ljava/lang/String;)Ljava/lang/Integer;
+        38: invokevirtual #11                 // Method java/lang/Integer.intValue:()I
+        41: putfield      #2                  // Field th_interval:I
+        44: goto          54
+        47: astore_2
+        48: aload_0
+        49: bipush        70
+        51: putfield      #2                  // Field th_interval:I
+        54: aload_0
+        55: getfield      #2                  // Field th_interval:I
+        58: iconst_1
+        59: if_icmpge     70
+        62: aload_0
+        63: iconst_1
+        64: putfield      #2                  // Field th_interval:I
+        67: goto          87
+        70: aload_0
+        71: getfield      #2                  // Field th_interval:I
+        74: sipush        300
+        77: if_icmple     87
+        80: aload_0
+        81: sipush        300
+        84: putfield      #2                  // Field th_interval:I
+        87: aload_0
+        88: bipush        10
+        90: putfield      #3                  // Field th_jm:I
+        93: return
+      Exception table:
+         from    to  target type
+            33    44    47   Class java/lang/NumberFormatException
+      LineNumberTable:
+        line 61: 0
+        line 62: 7
+        line 63: 19
+        line 67: 26
+        line 69: 33
+        line 72: 47
+        line 74: 54
+        line 75: 62
+        line 77: 70
+        line 78: 80
+        line 82: 87
+        line 86: 93
+
+  public void stop();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=1, args_size=1
+         0: aload_0
+         1: getfield      #4                  // Field th:Ljava/lang/Thread;
+         4: ifnull        12
+         7: aload_0
+         8: aconst_null
+         9: putfield      #4                  // Field th:Ljava/lang/Thread;
+        12: return
+      LineNumberTable:
+        line 94: 0
+        line 95: 7
+        line 97: 12
+
+  public void destroy();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=0, locals=1, args_size=1
+         0: return
+      LineNumberTable:
+        line 102: 0
+
+  public void paint(java.awt.Graphics);
+    descriptor: (Ljava/awt/Graphics;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=5, locals=2, args_size=2
+         0: aload_1
+         1: aload_0
+         2: getfield      #13                 // Field gg:LGameGraphics;
+         5: getfield      #14                 // Field GameGraphics.os_img:Ljava/awt/Image;
+         8: iconst_0
+         9: iconst_0
+        10: aload_0
+        11: invokevirtual #15                 // Method java/awt/Graphics.drawImage:(Ljava/awt/Image;IILjava/awt/image/ImageObserver;)Z
+        14: pop
+        15: return
+      LineNumberTable:
+        line 111: 0
+        line 112: 15
+
+  public void update(java.awt.Graphics);
+    descriptor: (Ljava/awt/Graphics;)V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=2, locals=2, args_size=2
+         0: aload_0
+         1: aload_1
+         2: invokevirtual #16                 // Method paint:(Ljava/awt/Graphics;)V
+         5: return
+      LineNumberTable:
+        line 119: 0
+        line 120: 5
+
+  public void run();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=3, locals=2, args_size=1
+         0: goto          3
+         3: aload_0
+         4: getfield      #3                  // Field th_jm:I
+         7: ifle          47
+        10: aload_0
+        11: dup
+        12: getfield      #3                  // Field th_jm:I
+        15: iconst_1
+        16: isub
+        17: putfield      #3                  // Field th_jm:I
+        20: aload_0
+        21: getfield      #3                  // Field th_jm:I
+        24: ifgt          38
+        27: aload_0
+        28: invokevirtual #17                 // Method init_j:()V
+        31: aload_0
+        32: getfield      #18                 // Field mp:LMainProgram;
+        35: invokevirtual #19                 // Method MainProgram.start:()V
+        38: ldc2_w        #20                 // long 70l
+        41: invokestatic  #22                 // Method java/lang/Thread.sleep:(J)V
+        44: goto          3
+        47: aload_0
+        48: getfield      #18                 // Field mp:LMainProgram;
+        51: getfield      #23                 // Field MainProgram.ml_mode:I
+        54: bipush        100
+        56: if_icmpne     69
+        59: aload_0
+        60: getfield      #18                 // Field mp:LMainProgram;
+        63: invokevirtual #24                 // Method MainProgram.mL100:()V
+        66: goto          76
+        69: aload_0
+        70: getfield      #18                 // Field mp:LMainProgram;
+        73: invokevirtual #25                 // Method MainProgram.mainLoop:()V
+        76: aload_0
+        77: invokevirtual #26                 // Method java/awt/Component.repaint:()V
+        80: aload_0
+        81: getfield      #2                  // Field th_interval:I
+        84: i2l
+        85: invokestatic  #22                 // Method java/lang/Thread.sleep:(J)V
+        88: goto          3
+        91: astore_1
+        92: return
+      Exception table:
+         from    to  target type
+             0    91    91   Class java/lang/Exception
+      LineNumberTable:
+        line 128: 0
+        line 129: 3
+        line 131: 10
+        line 133: 20
+        line 137: 27
+        line 140: 31
+        line 144: 38
+        line 147: 47
+        line 149: 59
+        line 153: 69
+        line 157: 76
+        line 160: 80
+        line 128: 88
+        line 164: 91
+        line 166: 92
+
+  public void init_j();
+    descriptor: ()V
+    flags: (0x0001) ACC_PUBLIC
+    Code:
+      stack=6, locals=4, args_size=1
+         0: aload_0
+         1: new           #28                 // class GameGraphics
+         4: dup
+         5: aload_0
+         6: invokespecial #29                 // Method GameGraphics."<init>":(Ljava/applet/Applet;)V
+         9: putfield      #13                 // Field gg:LGameGraphics;
+        12: aload_0
+        13: getfield      #13                 // Field gg:LGameGraphics;
+        16: getstatic     #30                 // Field java/awt/Color.black:Ljava/awt/Color;
+        19: invokevirtual #31                 // Method GameGraphics.setBackcolor:(Ljava/awt/Color;)V
+        22: aload_0
+        23: ldc           #32                 // String filename_title
+        25: invokevirtual #9                  // Method java/applet/Applet.getParameter:(Ljava/lang/String;)Ljava/lang/String;
+        28: astore_1
+        29: aload_0
+        30: getfield      #13                 // Field gg:LGameGraphics;
+        33: iconst_0
+        34: aload_1
+        35: invokevirtual #33                 // Method GameGraphics.addListImage:(ILjava/lang/String;)V
+        38: aload_0
+        39: ldc           #34                 // String filename_ending
+        41: invokevirtual #9                  // Method java/applet/Applet.getParameter:(Ljava/lang/String;)Ljava/lang/String;
+        44: astore_1
+        45: aload_0
+        46: getfield      #13                 // Field gg:LGameGraphics;
+        49: iconst_1
+        50: aload_1
+        51: invokevirtual #33                 // Method GameGraphics.addListImage:(ILjava/lang/String;)V
+        54: aload_0
+        55: ldc           #35                 // String filename_gameover
+        57: invokevirtual #9                  // Method java/applet/Applet.getParameter:(Ljava/lang/String;)Ljava/lang/String;
+        60: astore_1
+        61: aload_0
+        62: getfield      #13                 // Field gg:LGameGraphics;
+        65: iconst_2
+        66: aload_1
+        67: invokevirtual #33                 // Method GameGraphics.addListImage:(ILjava/lang/String;)V
+        70: aload_0
+        71: ldc           #36                 // String stage_select
+        73: invokevirtual #9                  // Method java/applet/Applet.getParameter:(Ljava/lang/String;)Ljava/lang/String;
+        76: astore_1
+        77: aload_1
+        78: invokestatic  #10                 // Method java/lang/Integer.valueOf:(Ljava/lang/String;)Ljava/lang/Integer;
+        81: invokevirtual #11                 // Method java/lang/Integer.intValue:()I
+        84: istore_2
+        85: goto          91
+        88: astore_3
+        89: iconst_m1
+        90: istore_2
+        91: iload_2
+        92: iconst_2
+        93: if_icmpne     112
+        96: aload_0
+        97: ldc           #37                 // String filename_chizu
+        99: invokevirtual #9                  // Method java/applet/Applet.getParameter:(Ljava/lang/String;)Ljava/lang/String;
+       102: astore_1
+       103: aload_0
+       104: getfield      #13                 // Field gg:LGameGraphics;
+       107: iconst_3
+       108: aload_1
+       109: invokevirtual #33                 // Method GameGraphics.addListImage:(ILjava/lang/String;)V
+       112: aload_0
+       113: getfield      #13                 // Field gg:LGameGraphics;
+       116: invokevirtual #38                 // Method GameGraphics.loadImage:()V
+       119: aload_0
+       120: new           #39                 // class GameMouse
+       123: dup
+       124: invokespecial #40                 // Method GameMouse."<init>":()V
+       127: putfield      #41                 // Field gm:LGameMouse;
+       130: aload_0
+       131: aload_0
+       132: getfield      #41                 // Field gm:LGameMouse;
+       135: invokevirtual #42                 // Method java/awt/Component.addMouseListener:(Ljava/awt/event/MouseListener;)V
+       138: aload_0
+       139: new           #43                 // class GameKey
+       142: dup
+       143: invokespecial #44                 // Method GameKey."<init>":()V
+       146: putfield      #45                 // Field gk:LGameKey;
+       149: aload_0
+       150: aload_0
+       151: getfield      #45                 // Field gk:LGameKey;
+       154: invokevirtual #46                 // Method java/awt/Component.addKeyListener:(Ljava/awt/event/KeyListener;)V
+       157: aload_0
+       158: new           #47                 // class MainProgram
+       161: dup
+       162: aload_0
+       163: getfield      #13                 // Field gg:LGameGraphics;
+       166: aload_0
+       167: getfield      #41                 // Field gm:LGameMouse;
+       170: aload_0
+       171: getfield      #45                 // Field gk:LGameKey;
+       174: invokespecial #48                 // Method MainProgram."<init>":(LGameGraphics;LGameMouse;LGameKey;)V
+       177: putfield      #18                 // Field mp:LMainProgram;
+       180: return
+      Exception table:
+         from    to  target type
+            77    85    88   Class java/lang/NumberFormatException
+      LineNumberTable:
+        line 176: 0
+        line 177: 12
+        line 180: 22
+        line 181: 29
+        line 184: 38
+        line 185: 45
+        line 188: 54
+        line 189: 61
+        line 191: 70
+        line 193: 77
+        line 196: 88
+        line 198: 91
+        line 199: 96
+        line 200: 103
+        line 203: 112
+        line 207: 119
+        line 208: 130
+        line 211: 138
+        line 212: 149
+        line 215: 157
+        line 216: 180
+}
+SourceFile: "MasaoConstruction.java"
