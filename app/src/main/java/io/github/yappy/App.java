@@ -3,15 +3,14 @@
  */
 package io.github.yappy;
 
+import io.github.yappy.mccport.MccMod;
+
 public class App {
     public String getGreeting() {
         return "Hello World!";
     }
 
     public static void main(String[] args) throws Exception {
-        System.out.println(new App().getGreeting());
-
-		Class cls = Class.forName("MasaoMakerSP");
-		System.out.println(cls.newInstance());
+        MccMod.init();
     }
 }

@@ -20,7 +20,7 @@ dependencies {
     testImplementation libs.junit
 
     // This dependency is used by the application.
-    implementation project(':applet')
+    implementation project(':mccport')
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -33,4 +33,5 @@ java {
 application {
     // Define the main class for the application.
     mainClass = 'io.github.yappy.App'
+    applicationDefaultJvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
 }
