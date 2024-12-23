@@ -3,15 +3,53 @@
  */
 package io.github.yappy.mccport;
 
-public class AppletMod {
+import java.awt.Image;
+import java.awt.Panel;
+import java.net.URL;
+
+public class AppletMod extends Panel {
 
     public AppletMod() {
         System.out.println("AppletMod constructor");
     }
 
     public String getParameter(String name) {
-        System.out.println("getParameter: " + name);
+        System.out.println("AppletMod getParameter: " + name);
         return null;
+    }
+
+    public URL getDocumentBase() {
+        System.out.println("AppletMod getDocumentBase");
+        return null;
+    }
+
+    public Image getImage(URL url, String name) {
+        System.out.println("AppletMod getImage: " + url + ", " + name);
+        return null;
+    }
+
+    public void init() {
+        System.out.println("AppletMod init");
+    }
+
+    public void start() {
+        System.out.println("AppletMod start");
+    }
+
+    public void stop() {
+        System.out.println("AppletMod stop");
+    }
+
+    public void destroy() {
+        System.out.println("AppletMod destroy");
+    }
+
+    public void paint(java.awt.Graphics g) {
+        System.out.println("paint");
+    }
+
+    public void update(java.awt.Graphics g) {
+        System.out.println("update");
     }
 
 }

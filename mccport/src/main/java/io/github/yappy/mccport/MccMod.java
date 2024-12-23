@@ -4,12 +4,13 @@
 package io.github.yappy.mccport;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
 import javassist.ByteArrayClassPath;
-import javassist.ClassClassPath;
+import javassist.CannotCompileException;
 import javassist.ClassMap;
 import javassist.ClassPool;
 import javassist.CtClass;
@@ -17,13 +18,37 @@ import javassist.NotFoundException;
 
 public class MccMod {
 
+    // MasaoConstruction
+    private static Class<?> CLS_MC = null;
     // Masao class names
-    private static final List<String> MCC_CLASSES = ImmutableList.of("CharacterObject");
+    private static final List<String> MCC_CLASSES = ImmutableList.of(
+            "CharacterObject", "GameMouse", "MainProgram",
+            "GameGraphics", "IdouGamen", "MapSystem",
+            "GameKey", "KeyboardMenu", "MasaoConstruction");
     // Replace class name map
     private static final ClassMap MCC_CLASS_MAP = new ClassMap();
 
     static {
         MCC_CLASS_MAP.put("java.applet.Applet", "io.github.yappy.mccport.AppletMod");
+
+        ClassPool cp = ClassPool.getDefault();
+        try {
+            for (var clsName : MCC_CLASSES) {
+                addClass(clsName);
+                CtClass ctc = cp.get(clsName);
+                ctc.replaceClassName(MCC_CLASS_MAP);
+                // ctc.debugWriteFile("dbg");
+            }
+            for (var clsName : MCC_CLASSES) {
+                CtClass ctc = cp.get(clsName);
+                var cls = ctc.toClass();
+                if (clsName.equals("MasaoConstruction")) {
+                    CLS_MC = cls;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void addClass(String name) throws IOException, NotFoundException {
@@ -32,21 +57,12 @@ public class MccMod {
         cp.insertClassPath(new ByteArrayClassPath(name, b));
     }
 
-    public static void init() {
+    public static AppletMod constructAppletMod() {
         ClassPool cp = ClassPool.getDefault();
-        cp.insertClassPath(new ClassClassPath(MccMod.class));
-        try {
-            for (var clsName : MCC_CLASSES) {
-                addClass(clsName);
-                CtClass ctc = cp.get(clsName);
-                ctc.replaceClassName(MCC_CLASS_MAP);
-            }
-            CtClass ctClsMc = cp.get("MasaoConstruction");
 
-            Class<?> cls = ctClsMc.toClass();
-            var con = cls.getDeclaredConstructor();
-            var obj = con.newInstance();
-            System.out.println(obj);
+        try {
+            Constructor<?> con = CLS_MC.getDeclaredConstructor();
+            return (AppletMod) con.newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

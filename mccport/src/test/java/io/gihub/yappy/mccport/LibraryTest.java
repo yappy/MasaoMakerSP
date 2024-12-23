@@ -11,6 +11,6 @@ import static org.junit.Assert.*;
 
 public class LibraryTest {
     @Test public void someLibraryMethodReturnsTrue() {
-        MccMod.init();
+        System.out.println(MccMod.class);
     }
 }
