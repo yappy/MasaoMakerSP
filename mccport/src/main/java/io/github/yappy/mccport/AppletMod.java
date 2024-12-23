@@ -6,26 +6,44 @@ package io.github.yappy.mccport;
 import java.awt.Image;
 import java.awt.Panel;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 public class AppletMod extends Panel {
+
+    private Map<String, String> parameters = new HashMap<>();
 
     public AppletMod() {
         System.out.println("AppletMod constructor");
     }
 
+    public String setParameter(String name, String value) {
+        return parameters.put(name, value);
+    }
+
+    // java.applet.Applet compatible -------------------------------------------
+
     public String getParameter(String name) {
-        System.out.println("AppletMod getParameter: " + name);
-        return null;
+        String value = parameters.get(name);
+        System.out.println("AppletMod getParameter: " + name + " = " + value);
+        return value;
     }
 
     public URL getDocumentBase() {
-        System.out.println("AppletMod getDocumentBase");
+        System.out.println("AppletMod getDocumentBase: null");
         return null;
     }
 
     public Image getImage(URL url, String name) {
         System.out.println("AppletMod getImage: " + url + ", " + name);
-        return null;
+        try {
+            return ImageIO.read(getClass().getResource(name));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public void init() {

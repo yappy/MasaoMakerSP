@@ -10,7 +10,6 @@ import java.util.List;
 import com.google.common.collect.ImmutableList;
 
 import javassist.ByteArrayClassPath;
-import javassist.CannotCompileException;
 import javassist.ClassMap;
 import javassist.ClassPool;
 import javassist.CtClass;

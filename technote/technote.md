@@ -1,5 +1,56 @@
 # Technical Note
 
+## トラブル突破方法
+
+### ClassFormatError
+
+```txt
+ClassFormatError accessible:
+module java.base does not "opens java.lang" to unnamed module
+```
+
+Java 16 or 17 あたりからモジュール (Java の新機能) 間のアクセス制限が
+厳しくなったらしい。
+リフレクション等で怪しいことをしているプログラムが被害にあっている。
+外部からの文字列データとして内部 API のクラス名 (com.sun... みたいな) を渡して
+リフレクション経由で悪さをするセキュリティアタックへの対応措置と思われる。
+
+詳しいことは後で調べることとして、とりあえず JVM option に以下を渡せば突破できる。
+
+```txt
+--add-opens=java.base/java.lang=ALL-UNNAMED
+```
+
+### VerifyError
+
+バイトコードの書き換えが不完全だとクラスをロードしたあたりで JVM から発生。
+おかしなメソッド呼び出しを含むクラス + メソッド名が表示されるが、
+その中のどの呼び出しが悪いのかは分からない。
+
+```txt
+java.lang.Error
+    java.lang.LinkageError
+        java.lang.VerifyError
+```
+
+問題を起こしているメソッドの逆アセンブルを気合いで全部読めば理論上解決できる。
+
+例えば、java.awt.Component.repaint() を invokevirtual していたりするので
+スーパークラスを差し替えるならばここが解決できるようにしなければならない。
+
+```java
+public class MasaoConstruction extends java.applet.Applet implements java.lang.Runnable
+...
+public void run();
+  descriptor: ()V
+  flags: (0x0001) ACC_PUBLIC
+  Code:
+    stack=3, locals=2, args_size=1
+        0: goto          3
+        ...
+        77: invokevirtual #26                 // Method java/awt/Component.repaint:()V
+```
+
 ## javap
 
 JDK についてくる標準ツール javap で逆アセンブルが可能。
