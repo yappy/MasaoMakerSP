@@ -8,16 +8,17 @@ import java.lang.reflect.Constructor;
 import java.util.List;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.io.Resources;
 
 import javassist.ByteArrayClassPath;
 import javassist.ClassMap;
 import javassist.ClassPool;
 import javassist.CtClass;
-import javassist.NotFoundException;
+import javassist.CtMethod;
 
 public class MccMod {
 
-    // MasaoConstruction
+    // Class<MasaoConstruction>
     private static Class<?> CLS_MC = null;
     // Masao class names
     private static final List<String> MCC_CLASSES = ImmutableList.of(
@@ -33,14 +34,28 @@ public class MccMod {
         ClassPool cp = ClassPool.getDefault();
         try {
             for (var clsName : MCC_CLASSES) {
-                addClass(clsName);
+                // read class file binary from resources
+                byte[] b = Resources.toByteArray(Resources.getResource(clsName + ".class"));
+                // register to ClassPool
+                cp.insertClassPath(new ByteArrayClassPath(clsName, b));
+
+                // edit
                 CtClass ctc = cp.get(clsName);
+                // apply class name replacement
                 ctc.replaceClassName(MCC_CLASS_MAP);
                 // ctc.debugWriteFile("dbg");
             }
+            {
+                // raname MasaoConstruction#run() => runHooked()
+                CtClass ctc = cp.get("MasaoConstruction");
+                CtMethod m = ctc.getMethod("run", "()V");
+                m.setName("runHooked");
+            }
             for (var clsName : MCC_CLASSES) {
                 CtClass ctc = cp.get(clsName);
-                var cls = ctc.toClass();
+                // load CtClass as Class
+                Class<?> cls = ctc.toClass();
+                // keep Class<MasaoConstruction>
                 if (clsName.equals("MasaoConstruction")) {
                     CLS_MC = cls;
                 }
@@ -50,15 +65,7 @@ public class MccMod {
         }
     }
 
-    private static void addClass(String name) throws IOException, NotFoundException {
-        byte[] b = MccMod.class.getClassLoader().getResourceAsStream(name + ".class").readAllBytes();
-        ClassPool cp = ClassPool.getDefault();
-        cp.insertClassPath(new ByteArrayClassPath(name, b));
-    }
-
     public static AppletMod constructAppletMod() {
-        ClassPool cp = ClassPool.getDefault();
-
         try {
             Constructor<?> con = CLS_MC.getDeclaredConstructor();
             return (AppletMod) con.newInstance();
@@ -66,4 +73,5 @@ public class MccMod {
             throw new RuntimeException(e);
         }
     }
+
 }

@@ -11,8 +11,15 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-public class AppletMod extends Panel {
+public abstract class AppletMod extends Panel implements Runnable {
 
+    // must access with synchronized(this)
+    private class SharedState {
+        boolean isStarted = false;
+        Thread mcThread = null;
+        boolean isExiting = false;
+    }
+    private SharedState sharedState = new SharedState();
     private Map<String, String> parameters = new HashMap<>();
 
     public AppletMod() {
@@ -20,10 +27,66 @@ public class AppletMod extends Panel {
     }
 
     public String setParameter(String name, String value) {
+        synchronized (sharedState) {
+            if (sharedState.isStarted) {
+                throw new IllegalStateException("already started");
+            }
+        }
         return parameters.put(name, value);
     }
 
-    // java.applet.Applet compatible -------------------------------------------
+    public void startup() {
+        synchronized (sharedState) {
+            if (sharedState.isStarted) {
+                throw new IllegalStateException("already started");
+            }
+            sharedState.isStarted = true;
+        }
+        // MasaoConstruction#start() will do nothing
+        init();
+        // MasaoConstruction#start() will start a thread
+        // run() will be executed in a separated thread
+        start();
+    }
+
+    public abstract void runHooked();
+
+    // MasaoConstruction#start() will start a thread
+    // Raname: MasaoConstruction#run() => runHooked()
+    // MasaoConstruction will not implement run() and will implement runHooked()
+    // instead
+    @Override
+    public void run() {
+        System.out.println("AppletMod run start");
+        synchronized (sharedState) {
+            if (sharedState.isExiting) {
+                System.out.println("AppletMod run end (without runHooked)");
+                return;
+            }
+            sharedState.mcThread = Thread.currentThread();
+        }
+        runHooked();
+        System.out.println("AppletMod run end (runHooked was interrupted)");
+    }
+
+    public void shutdown() {
+        synchronized (sharedState) {
+            if (!sharedState.isStarted) {
+                throw new IllegalStateException("not started");
+            }
+            sharedState.isExiting = true;
+            if (sharedState.mcThread != null) {
+                sharedState.mcThread.interrupt();
+            }
+        }
+        // MasaoConstruction#stop() will do { this.th = null; }
+        // It is meaningless...
+        stop();
+        // MasaoConstruction#destroy() will do nothing
+        destroy();
+    }
+
+    // ----- java.applet.Applet compatible (Do not call directly) -----
 
     public String getParameter(String name) {
         String value = parameters.get(name);
@@ -62,12 +125,12 @@ public class AppletMod extends Panel {
         System.out.println("AppletMod destroy");
     }
 
-    public void paint(java.awt.Graphics g) {
-        System.out.println("paint");
-    }
+    // public void paint(java.awt.Graphics g) {
+    // System.out.println("paint");
+    // }
 
-    public void update(java.awt.Graphics g) {
-        System.out.println("update");
-    }
+    // public void update(java.awt.Graphics g) {
+    // System.out.println("update");
+    // }
 
 }

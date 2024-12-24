@@ -1,6 +1,8 @@
 package io.github.yappy;
 
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -44,12 +46,23 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         JFrame frame = new JFrame("JFrame - Masao Construction");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.repaint();
 
         AppletMod applet = MccMod.constructAppletMod();
         putDefaultParameters(applet);
-        applet.init();
-        applet.start();
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+                applet.startup();
+            }
+            @Override
+            public void windowClosing(WindowEvent windowEvent) {
+                applet.shutdown();
+                frame.dispose();
+            }
+        });
 
         frame.setLocationByPlatform(true);
         applet.setPreferredSize(new Dimension(512, 320));
