@@ -50,6 +50,7 @@ public class MainFrame extends JFrame {
         gamePanel.setPreferredSize(new Dimension(MccMod.MC_APPLET_W, MccMod.MC_APPLET_H));
         add(gamePanel);
         pack();
+        setResizable(false);
     }
 
     private JMenuBar createMenuBar() {
