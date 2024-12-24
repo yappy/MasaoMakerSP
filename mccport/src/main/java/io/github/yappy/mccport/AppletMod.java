@@ -3,6 +3,7 @@
  */
 package io.github.yappy.mccport;
 
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Panel;
 import java.net.URL;
@@ -23,7 +24,10 @@ public abstract class AppletMod extends Panel implements Runnable {
     private Map<String, String> parameters = new HashMap<>();
 
     public AppletMod() {
+        super();
         System.out.println("AppletMod constructor");
+        setSize(MccMod.MC_APPLET_W, MccMod.MC_APPLET_H);
+        setPreferredSize(new Dimension(MccMod.MC_APPLET_W, MccMod.MC_APPLET_H));
     }
 
     public String setParameter(String name, String value) {
@@ -90,7 +94,7 @@ public abstract class AppletMod extends Panel implements Runnable {
 
     public String getParameter(String name) {
         String value = parameters.get(name);
-        System.out.println("AppletMod getParameter: " + name + " = " + value);
+        System.out.printf("AppletMod getParameter: %s=%s%n", name, value);
         return value;
     }
 
@@ -100,7 +104,7 @@ public abstract class AppletMod extends Panel implements Runnable {
     }
 
     public Image getImage(URL url, String name) {
-        System.out.println("AppletMod getImage: " + url + ", " + name);
+        System.out.printf("AppletMod getImage: %s, %s%n", url, name);
         try {
             return ImageIO.read(getClass().getResource(name));
         } catch (Exception e) {

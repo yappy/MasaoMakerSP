@@ -3,7 +3,6 @@
  */
 package io.github.yappy.mccport;
 
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.util.List;
 
@@ -17,6 +16,12 @@ import javassist.CtClass;
 import javassist.CtMethod;
 
 public class MccMod {
+
+    public static int MC_APPLET_W = 512;
+    public static int MC_APPLET_H = 320;
+    public static int MC_MAP_W = 180;
+    public static int MC_MAP_W_PART = 60;
+    public static int MC_MAP_H = 30;
 
     // Class<MasaoConstruction>
     private static Class<?> CLS_MC = null;
