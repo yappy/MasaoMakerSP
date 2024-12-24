@@ -58,7 +58,7 @@ JDK についてくる標準ツール javap で逆アセンブルが可能。
 このディレクトリ内のテキストファイルを参照。
 
 ```sh
- for file in *.class; do javap -v $file > ${file}.txt; done
+for file in *.class; do javap -v $file > ${file}.txt; done
 ```
 
 -v をつけないと概要が得られる。以下にまとめる。

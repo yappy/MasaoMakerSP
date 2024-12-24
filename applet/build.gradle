@@ -18,10 +18,10 @@ tasks.withType(JavaCompile) {
 sourceSets {
     main {
         java {
-            srcDir '../original'
+            srcDir '../original/files'
         }
         resources {
-            srcDir '../original'
+            srcDir '../original/files'
             include '*.gif'
             include '*.txt'
         }
