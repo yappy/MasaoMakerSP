@@ -1,5 +1,7 @@
 # MasaoMakerSP
 
+[![Java CI with Gradle](https://github.com/yappy/MasaoMakerSP/actions/workflows/gradle.yml/badge.svg)](https://github.com/yappy/MasaoMakerSP/actions/workflows/gradle.yml)
+
 まさおメーカーSP
 
 まさおコンストラクションとまさおメーカー SP のオリジナルコードを
