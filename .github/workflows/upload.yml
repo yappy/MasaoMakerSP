@@ -1,0 +1,33 @@
+# This workflow will build a Java project with Gradle
+# For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
+
+name: Auto Release
+
+on:
+  release:
+    types: [created]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v2
+      with:
+        java-version: '17'
+        distribution: 'adopt'
+
+    # including test + distZip
+    - name: gradlew build
+      run: ./gradlew -i build
+
+    - name: Upload
+      env:
+        GITHUB_TOKEN: ${{ github.TOKEN }}
+      run: gh release upload ${{github.event.release.tag_name}} */build/distributions/*.zip
