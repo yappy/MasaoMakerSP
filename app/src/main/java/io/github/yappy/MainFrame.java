@@ -27,6 +27,7 @@ import com.google.common.io.Resources;
 
 import io.github.yappy.mccport.AppletMod;
 import io.github.yappy.mccport.MccMod;
+import io.github.yappy.mcutil.McParam;
 
 public class MainFrame extends JFrame {
 
@@ -105,31 +106,10 @@ public class MainFrame extends JFrame {
     }
 
     private static void putDefaultParameters(AppletMod applet) throws IOException {
-        String src = Resources.toString(Resources.getResource("defaultparam.txt"), StandardCharsets.UTF_8);
-
-        List<String> lines = src.lines().toList();
-        int idx = 0;
-        String key = null;
-        for (var line : lines) {
-            switch (idx) {
-                case 1:
-                    key = line;
-                    break;
-                case 2:
-                    applet.setParameter(key, line);
-                    break;
-            }
-            idx = (idx + 1) % 3;
+        List<McParam> list = MccMod.getMc2Param();
+        for (var param : list) {
+            applet.setParameter(param.name(), param.value());
         }
-
-        // map
-        String defmap = ".".repeat(60);
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 30; y++) {
-                applet.setParameter(String.format("map%d-%d", x, y), defmap);
-            }
-        }
-        applet.setParameter("map0-29", ".".repeat(10) + "a".repeat(50));
     }
 
     private void onWindowClosing(WindowEvent we) {

@@ -13,9 +13,6 @@ import javax.swing.text.html.parser.ParserDelegator;
 
 public class HtmlParser {
 
-    public record McParam(String name, String value, String comment) {
-    }
-
     public static List<McParam> parse(String html) {
         var delegator = new ParserDelegator();
         var parser = new Parser();
@@ -54,7 +51,7 @@ public class HtmlParser {
                 var value = a.getAttribute(HTML.Attribute.VALUE);
                 if (name != null && value != null) {
                     var nameStr = name.toString();
-                    var valueStr = name.toString();
+                    var valueStr = value.toString();
                     if (nameStr.startsWith("map")) {
                         comment = "";
                     }

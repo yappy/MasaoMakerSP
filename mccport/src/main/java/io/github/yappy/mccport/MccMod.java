@@ -4,11 +4,15 @@
 package io.github.yappy.mccport;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 
+import io.github.yappy.mcutil.McParam;
 import javassist.ByteArrayClassPath;
 import javassist.ClassMap;
 import javassist.ClassPool;
@@ -40,7 +44,7 @@ public class MccMod {
         try {
             for (var clsName : MCC_CLASSES) {
                 // read class file binary from resources
-                byte[] b = Resources.toByteArray(Resources.getResource(clsName + ".class"));
+                byte[] b = Resources.toByteArray(Resources.getResource("mc2/%s.class".formatted(clsName)));
                 // register to ClassPool
                 cp.insertClassPath(new ByteArrayClassPath(clsName, b));
 
@@ -79,4 +83,25 @@ public class MccMod {
         }
     }
 
+    public static List<McParam> getMc2Param() {
+        List<McParam> result = new ArrayList<>();
+
+        String src;
+        try {
+            src = Resources.toString(Resources.getResource("mc2/mc2param.txt"), Charsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        Scanner in = new Scanner(src);
+        while (in.hasNextLine()) {
+            String name = in.nextLine();
+            String value = in.nextLine();
+            String comment = in.nextLine();
+            result.add(new McParam(name, value, comment));
+        }
+        in.close();
+
+        return result;
+    }
 }
