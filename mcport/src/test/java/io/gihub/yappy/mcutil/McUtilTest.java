@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class LibraryTest {
+public class McUtilTest {
 
     private static final boolean WRITE_FILE = false;
 
@@ -40,14 +40,12 @@ public class LibraryTest {
     public void createDefaultData3() throws IOException {
         var data = new LinkedHashMap<String, McParam>();
 
-        mergeDefaultData(data, "UTF-8", "../original/mc3/game1.html");
-        /*
-         * mergeDefaultData(data, "UTF-8", "../original/mc3/game_mt.html");
-         * for (int i = 2; i <= 15; i++) {
-         * mergeDefaultData(data, "UTF-8",
-         * "../original/mc3/omake/game%d.html".formatted(i));
-         * }
-         */
+        //mergeDefaultData(data, "UTF-8", "../original/mc3/game1.html");
+        mergeDefaultData(data, "UTF-8", "../original/mc3/game_mt.html");
+        //for (int i = 2; i <= 15; i++) {
+        //    mergeDefaultData(data, "UTF-8",
+        //    "../original/mc3/omake/game%d.html".formatted(i));
+        //}
 
         if (WRITE_FILE) {
             var writer = new PrintWriter(Files.newBufferedWriter(Paths.get("mc3param.txt")));
