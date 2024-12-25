@@ -14,12 +14,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -27,6 +29,7 @@ import com.google.common.io.Resources;
 
 import io.github.yappy.mccport.AppletMod;
 import io.github.yappy.mccport.McMod;
+import io.github.yappy.mccport.McMod.McVersion;
 import io.github.yappy.mcutil.McParam;
 
 public class MainFrame extends JFrame {
@@ -34,9 +37,11 @@ public class MainFrame extends JFrame {
     private static final String SUPPORT_URL = "https://github.com/yappy/MasaoMakerSP";
 
     private Properties versionInfo;
-    private JPanel gamePanel;
     private AppletMod appletMod = null;
-    private McMod.McVersion version = McMod.McVersion.MC_2_8;
+
+    private JPanel gamePanel;
+    private JRadioButtonMenuItem menuItem_2_8;
+    private JRadioButtonMenuItem menuItem_3_0;
 
     public MainFrame() {
         super("Masao Construction Desktop");
@@ -74,6 +79,7 @@ public class MainFrame extends JFrame {
         var menuBar = new JMenuBar();
         JMenu menu;
         JMenuItem item;
+        ButtonGroup group;
 
         menu = new JMenu("ゲーム (G)");
         menu.setMnemonic(KeyEvent.VK_G);
@@ -82,6 +88,16 @@ public class MainFrame extends JFrame {
         item = new JMenuItem("開始 (S)", KeyEvent.VK_S);
         item.addActionListener(this::actionStart);
         menu.add(item);
+
+        menu.addSeparator();
+
+        group = new ButtonGroup();
+        menuItem_2_8 = new JRadioButtonMenuItem("まさおコンストラクション 2.8", true);
+        menuItem_3_0 = new JRadioButtonMenuItem("まさおコンストラクション 3.0");
+        group.add(menuItem_2_8);
+        group.add(menuItem_3_0);
+        menu.add(menuItem_2_8);
+        menu.add(menuItem_3_0);
 
         menu.addSeparator();
 
@@ -106,13 +122,21 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
+    private McVersion getSelectedVersion() {
+        if (menuItem_2_8.isSelected()) {
+            return McVersion.MC_2_8;
+        } else {
+            return McVersion.MC_3_0;
+        }
+    }
+
     private void putDefaultParamAndImage(AppletMod applet) throws IOException {
-        List<McParam> params = McMod.getDefParams(version);
+        List<McParam> params = McMod.getDefParams(getSelectedVersion());
         for (var param : params) {
             applet.setParameter(param.name(), param.value());
         }
 
-        Map<String, Image> images = McMod.getDefImages(version);
+        Map<String, Image> images = McMod.getDefImages(getSelectedVersion());
         applet.setImage(images);
     }
 
@@ -135,7 +159,7 @@ public class MainFrame extends JFrame {
                 gamePanel.remove(appletMod);
                 appletMod = null;
             }
-            AppletMod appletMod = McMod.constructAppletMod(version);
+            AppletMod appletMod = McMod.constructAppletMod(getSelectedVersion());
             putDefaultParamAndImage(appletMod);
             this.appletMod = appletMod;
             add(appletMod);
