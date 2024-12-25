@@ -27,7 +27,7 @@ jobs:
 
     - name: gradlew build
       if: runner.os == 'Linux'
-      run: ./gradlew build
+      run: ./gradlew -i build
     - name: gradlew.bat build
       if: runner.os == 'Windows'
-      run: ./gradlew.bat build
+      run: ./gradlew.bat -i build
