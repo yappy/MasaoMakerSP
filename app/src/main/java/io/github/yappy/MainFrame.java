@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -30,11 +32,15 @@ public class MainFrame extends JFrame {
 
     private static final String SUPPORT_URL = "https://github.com/yappy/MasaoMakerSP";
 
+    private Properties versionInfo;
     private JPanel gamePanel;
     private AppletMod appletMod = null;
 
     public MainFrame() {
         super("Masao Construction Desktop");
+
+        loadVersionInfo();
+
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override
@@ -51,6 +57,15 @@ public class MainFrame extends JFrame {
         add(gamePanel);
         pack();
         setResizable(false);
+    }
+
+    private void loadVersionInfo() {
+        versionInfo = new Properties();
+        try {
+            versionInfo.load(Resources.getResource("version.properties").openStream());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private JMenuBar createMenuBar() {
@@ -163,10 +178,14 @@ public class MainFrame extends JFrame {
     }
 
     private void actionAbout(ActionEvent ae) {
-        var text = new JTextArea("まさおコンストラクション Desktop\n\n"
-                + "詳細は、サポートサイトをご覧ください。");
-        text.setEditable(false);
-        JOptionPane.showMessageDialog(this, text, "このソフトウェアについて", JOptionPane.INFORMATION_MESSAGE);
+        String desc = versionInfo.getProperty("versionDescribe", "unknown");
+        String branch = versionInfo.getProperty("versionBranch", "unknown");
+        String hash = versionInfo.getProperty("versionHashfull", "unknown");
+        String date = versionInfo.getProperty("versionDate", "unknown");
+        var text = "%s\nBranch: %s\n%s\n%s".formatted(desc, branch, hash, date);
+        var area = new JTextArea("まさおコンストラクション Desktop\n\n" + text);
+        area.setEditable(false);
+        JOptionPane.showMessageDialog(this, area, "このソフトウェアについて", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void appMain(String... args) {

@@ -36,3 +36,45 @@ application {
     mainClass = 'io.github.yappy.App'
     applicationDefaultJvmArgs = ['--add-opens=java.base/java.lang=ALL-UNNAMED']
 }
+
+def git(...args) {
+    def proc = "git ${args.join(' ')}".execute()
+    proc.waitFor()
+    return proc.text.trim()
+}
+
+ext.versionDescribe = git('describe', '--tags', '--always', '--dirty').trim()
+ext.versionBranch = git('symbolic-ref', 'HEAD').trim()
+ext.versionHashfull = git('show', 'HEAD', '--pretty=format:%H').trim()
+ext.versionDate = git('show', 'HEAD', '--pretty=%as')
+version = versionDescribe
+
+task generateVersionFile {
+    def versionFile = file("$buildDir/generated/resources/version.properties")
+    inputs.property 'versionDescribe', versionDescribe
+    inputs.property 'versionBranch', versionBranch
+    inputs.property 'versionHashfull', versionHashfull
+    inputs.property 'versionDate', versionDate
+    outputs.file versionFile
+    doLast {
+        versionFile.text = """\
+            versionDescribe = $versionDescribe
+            versionBranch   = $versionBranch
+            versionHashfull = $versionHashfull
+            versionDate     = $versionDate
+            """.stripIndent()
+    }
+}
+
+processResources {
+    dependsOn generateVersionFile
+    from "$buildDir/generated/resources"
+}
+
+jar {
+    manifest {
+        attributes(
+            'Implementation-Version' : version
+        )
+    }
+}
