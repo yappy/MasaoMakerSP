@@ -3,12 +3,21 @@
  */
 package io.github.yappy.mccport;
 
+import java.awt.Image;
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
+import javax.imageio.ImageIO;
+
+import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.io.Resources;
 
+import io.github.yappy.mcutil.McParam;
 import javassist.ByteArrayClassPath;
 import javassist.ClassMap;
 import javassist.ClassPool;
@@ -22,6 +31,9 @@ public class MccMod {
     public static int MC_MAP_W = 180;
     public static int MC_MAP_W_PART = 60;
     public static int MC_MAP_H = 30;
+
+    public static List<String> MC_IMAGE_NAMES = ImmutableList.of(
+            "chizu.gif", "ending.gif", "gameover.gif", "pattern.gif", "title.gif");
 
     // Class<MasaoConstruction>
     private static Class<?> CLS_MC = null;
@@ -40,7 +52,7 @@ public class MccMod {
         try {
             for (var clsName : MCC_CLASSES) {
                 // read class file binary from resources
-                byte[] b = Resources.toByteArray(Resources.getResource(clsName + ".class"));
+                byte[] b = Resources.toByteArray(Resources.getResource("mc2/class/%s.class".formatted(clsName)));
                 // register to ClassPool
                 cp.insertClassPath(new ByteArrayClassPath(clsName, b));
 
@@ -77,6 +89,43 @@ public class MccMod {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static List<McParam> getMc2DefParams() {
+        List<McParam> result = new ArrayList<>();
+
+        String src;
+        try {
+            src = Resources.toString(Resources.getResource("mc2/mc2param.txt"), Charsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        Scanner in = new Scanner(src);
+        while (in.hasNextLine()) {
+            String name = in.nextLine();
+            String value = in.nextLine();
+            String comment = in.nextLine();
+            result.add(new McParam(name, value, comment));
+        }
+        in.close();
+
+        return result;
+    }
+
+    public static Map<String, Image> getMc2DefImages() {
+        Map<String, Image> result = new HashMap<>();
+
+        for (var name : MC_IMAGE_NAMES) {
+            try {
+                Image img = ImageIO.read(Resources.getResource("mc2/image/%s".formatted(name)));
+                result.put(name, img);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return result;
     }
 
 }
