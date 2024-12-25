@@ -10,8 +10,6 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
 public abstract class AppletMod extends Panel implements Runnable {
 
     // must access with synchronized(this)
@@ -20,8 +18,10 @@ public abstract class AppletMod extends Panel implements Runnable {
         Thread mcThread = null;
         boolean isExiting = false;
     }
+
     private SharedState sharedState = new SharedState();
     private Map<String, String> parameters = new HashMap<>();
+    private Map<String, Image> images = new HashMap<>();
 
     public AppletMod() {
         super();
@@ -30,13 +30,40 @@ public abstract class AppletMod extends Panel implements Runnable {
         setPreferredSize(new Dimension(MccMod.MC_APPLET_W, MccMod.MC_APPLET_H));
     }
 
-    public String setParameter(String name, String value) {
+    public void setParameter(String name, String value) {
         synchronized (sharedState) {
             if (sharedState.isStarted) {
                 throw new IllegalStateException("already started");
             }
         }
-        return parameters.put(name, value);
+        parameters.put(name, value);
+    }
+
+    public void setParameter(Map<String, String> parameters) {
+        synchronized (sharedState) {
+            if (sharedState.isStarted) {
+                throw new IllegalStateException("already started");
+            }
+        }
+        this.parameters.putAll(parameters);
+    }
+
+    public void setImage(String name, Image image) {
+        synchronized (sharedState) {
+            if (sharedState.isStarted) {
+                throw new IllegalStateException("already started");
+            }
+        }
+        images.put(name, image);
+    }
+
+    public void setImage(Map<String, Image> images) {
+        synchronized (sharedState) {
+            if (sharedState.isStarted) {
+                throw new IllegalStateException("already started");
+            }
+        }
+        this.images.putAll(images);
     }
 
     public void startup() {
@@ -105,12 +132,7 @@ public abstract class AppletMod extends Panel implements Runnable {
 
     public Image getImage(URL url, String name) {
         System.out.printf("AppletMod getImage: %s, %s%n", url, name);
-        try {
-            return ImageIO.read(getClass().getResource(name));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return images.get(name);
     }
 
     public void init() {

@@ -1,7 +1,6 @@
 package io.gihub.yappy.mcutil;
 
 import org.junit.Test;
-import org.junit.Ignore;
 
 import io.github.yappy.mcutil.HtmlParser;
 import io.github.yappy.mcutil.McParam;

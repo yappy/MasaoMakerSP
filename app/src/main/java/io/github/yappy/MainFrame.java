@@ -3,13 +3,13 @@ package io.github.yappy;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -105,11 +105,14 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    private static void putDefaultParameters(AppletMod applet) throws IOException {
-        List<McParam> list = MccMod.getMc2Param();
-        for (var param : list) {
+    private static void putDefaultParamAndImage(AppletMod applet) throws IOException {
+        List<McParam> params = MccMod.getMc2DefParams();
+        for (var param : params) {
             applet.setParameter(param.name(), param.value());
         }
+
+        Map<String, Image> images = MccMod.getMc2DefImages();
+        applet.setImage(images);
     }
 
     private void onWindowClosing(WindowEvent we) {
@@ -132,7 +135,7 @@ public class MainFrame extends JFrame {
                 appletMod = null;
             }
             AppletMod appletMod = MccMod.constructAppletMod();
-            putDefaultParameters(appletMod);
+            putDefaultParamAndImage(appletMod);
             this.appletMod = appletMod;
             add(appletMod);
             System.out.println(appletMod.getSize());
