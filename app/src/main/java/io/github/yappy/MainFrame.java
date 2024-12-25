@@ -26,7 +26,7 @@ import javax.swing.JTextField;
 import com.google.common.io.Resources;
 
 import io.github.yappy.mccport.AppletMod;
-import io.github.yappy.mccport.MccMod;
+import io.github.yappy.mccport.McMod;
 import io.github.yappy.mcutil.McParam;
 
 public class MainFrame extends JFrame {
@@ -36,6 +36,7 @@ public class MainFrame extends JFrame {
     private Properties versionInfo;
     private JPanel gamePanel;
     private AppletMod appletMod = null;
+    private McMod.McVersion version = McMod.McVersion.MC_2_8;
 
     public MainFrame() {
         super("Masao Construction Desktop");
@@ -54,7 +55,7 @@ public class MainFrame extends JFrame {
         setJMenuBar(createMenuBar());
 
         gamePanel = new JPanel(new BorderLayout());
-        gamePanel.setPreferredSize(new Dimension(MccMod.MC_APPLET_W, MccMod.MC_APPLET_H));
+        gamePanel.setPreferredSize(new Dimension(McMod.MC_APPLET_W, McMod.MC_APPLET_H));
         add(gamePanel);
         pack();
         setResizable(false);
@@ -105,13 +106,13 @@ public class MainFrame extends JFrame {
         return menuBar;
     }
 
-    private static void putDefaultParamAndImage(AppletMod applet) throws IOException {
-        List<McParam> params = MccMod.getMc2DefParams();
+    private void putDefaultParamAndImage(AppletMod applet) throws IOException {
+        List<McParam> params = McMod.getDefParams(version);
         for (var param : params) {
             applet.setParameter(param.name(), param.value());
         }
 
-        Map<String, Image> images = MccMod.getMc2DefImages();
+        Map<String, Image> images = McMod.getDefImages(version);
         applet.setImage(images);
     }
 
@@ -134,7 +135,7 @@ public class MainFrame extends JFrame {
                 gamePanel.remove(appletMod);
                 appletMod = null;
             }
-            AppletMod appletMod = MccMod.constructAppletMod();
+            AppletMod appletMod = McMod.constructAppletMod(version);
             putDefaultParamAndImage(appletMod);
             this.appletMod = appletMod;
             add(appletMod);

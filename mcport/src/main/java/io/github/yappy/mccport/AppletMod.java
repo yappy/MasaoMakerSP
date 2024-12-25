@@ -26,8 +26,8 @@ public abstract class AppletMod extends Panel implements Runnable {
     public AppletMod() {
         super();
         System.out.println("AppletMod constructor");
-        setSize(MccMod.MC_APPLET_W, MccMod.MC_APPLET_H);
-        setPreferredSize(new Dimension(MccMod.MC_APPLET_W, MccMod.MC_APPLET_H));
+        setSize(McMod.MC_APPLET_W, McMod.MC_APPLET_H);
+        setPreferredSize(new Dimension(McMod.MC_APPLET_W, McMod.MC_APPLET_H));
     }
 
     public void setParameter(String name, String value) {
