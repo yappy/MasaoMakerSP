@@ -45,8 +45,8 @@ def git(...args) {
 
 ext.versionDescribe = git('describe', '--tags', '--always', '--dirty').trim()
 ext.versionBranch = git('symbolic-ref', 'HEAD').trim()
-ext.versionHashfull = git('show', 'HEAD', '--pretty=format:%H').trim()
-ext.versionDate = git('show', 'HEAD', '--pretty=%as')
+ext.versionHashfull = git('show', 'HEAD', '--no-patch', '--pretty=format:%H').trim()
+ext.versionDate = git('show', 'HEAD', '--no-patch', '--pretty=%as')
 version = versionDescribe
 
 task generateVersionFile {
