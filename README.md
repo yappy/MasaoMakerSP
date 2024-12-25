@@ -12,19 +12,53 @@ Java Applet は新しい Java では既に非推奨→廃止されており、
 古い Java をインストールすれば appletviewer というツールで実行できる
 可能性がありますが、逆にそれ以外の方法がありません。
 
+![Screen Shot](ss.png)
+
+## 実行方法
+
+リリースページ: <https://github.com/yappy/MasaoMakerSP/releases>
+
+* Windows なら `bin/app.bat`
+* Linux なら `bin/app`
+
 ## ステータス
 
-* まさおコンストラクション
-  * 黒魔術により Java Desktop アプリとして実行可能に。
-  * `./gradlew distZip` で `app.bat` or `./app` するだけのリリースパッケージが
-    できる。ただし JRE のインストールが必要。
-  * jpackage とかいうのを使うと全部入りのインストーラが作れるらしい。要調査。
-* まさおメーカーSP
-  * とりあえず Java 17 + Gradle 8.11 でビルドが通っただけ。
+<https://github.com/yappy/MasaoMakerSP/issues/3>
 
-## ビルド方法
+## Install Java
 
-Gradle 8.11.1
+### Windows
+
+Oracle と OpenJDK とライセンスの問題で大変ややこしいことになっている。
+winget で入れるのがアップデート管理も楽でよいと思うが、
+検索すると似たようなものが大量に出てくる。。
+どれもソースコードは同じでどれもほぼ同じだと思うので好きなものを入れればいいのでは
+ないでしょうか。
+
+Windows 10 の場合は Windows Terminal を入れないと winget が盛大に文字化けしたかも
+しれない。。文字コードの設定をいじるか、気合でエスパーする。
+
+```txt
+$ winget search jdk
+
+# Amazon 製?
+AdoptOpenJDK JDK with Hotspot 17        AdoptOpenJDK.OpenJDK.17        17.0.0.20  Tag: jdk winget
+# Eclipse 製?
+Eclipse Temurin JDK with Hotspot 17     EclipseAdoptium.Temurin.17.JDK 17.0.13.11 Tag: jdk winget
+# Oraclea 製、いわゆる Oracle JDK (ライセンス注意)
+Java(TM) SE Development Kit 17          Oracle.JDK.17                  17.0.12.0  Tag: jdk winget
+# OpenJDKの有力貢献企業らしい
+Liberica JDK 17                         BellSoft.LibericaJDK.17        17.0.13.12          winget
+Liberica JDK 17 Full                    BellSoft.LibericaJDK.17.Full   17.0.13.12          winget
+# Microsoft 製 OpenJDK
+Microsoft Build of OpenJDK with Hotspo… Microsoft.OpenJDK.17           17.0.13.11          winget
+Microsoft Build of OpenJDK with Hotspo… Microsoft.OpenJDK.21           21.0.5.11           winget
+# 公式っぽいけどプロジェクトが終了して 17 までしか出ていない
+ojdkbuild OpenJDK 17                    ojdkbuild.openjdk.17.jdk       17.0030.6…          winget
+
+# 多分どれもそんなに変わらないけど、まあ Microsoft を信用してみてもいいのでは
+$ winget install Microsoft.OpenJDK.17
+```
 
 ### Linux
 
@@ -33,12 +67,17 @@ Gradle 8.11.1
 
 ```sh
 # 確認環境 (debian bookworm) では openjdk-17-jre-headless
-sudo apt install default-jre-headless
+# 実行だけならこれでできる
+sudo apt install default-jre
 # だめだったらこっち
-sudo apt install default-jdk-headless
+sudo apt install default-jdk
+
 java -version
-# GUI が入っていないので、実行には headless でないものが必要です
 ```
+
+## ビルド方法 (ここから開発者向け)
+
+Gradle 8.11.1
 
 最近は指定バージョンがインストールされていればそれを使い、
 無ければ自動でダウンロードしてくれるようになったらしい。
@@ -63,33 +102,8 @@ java {
 # 起動高速化のためにデーモンを立ち上げっぱなしにするが、
 # JDK のインストール構成をいじると追従できなくなることがあるようなので
 # 怪しい場合はこちら
+# または PC/VM 再起動
 ./gradlew --no-daemon build
-```
-
-### Windows
-
-Oracle と OpenJDK とライセンスの問題で大変ややこしいことになっている。
-winget で入れるのがアップデート管理も楽でよいと思うが、
-検索すると似たようなものが大量に出てくる。。
-どれもソースコードは同じでどれもほぼ同じだと思うので好きなものを入れればいいのでは
-ないでしょうか。
-
-```txt
-$ winget search jdk
-
-# Amazon 製?
-AdoptOpenJDK JDK with Hotspot 17        AdoptOpenJDK.OpenJDK.17        17.0.0.20  Tag: jdk winget
-# Eclipse 製?
-Eclipse Temurin JDK with Hotspot 17     EclipseAdoptium.Temurin.17.JDK 17.0.13.11 Tag: jdk winget
-# Oraclea 製、いわゆる Oracle JDK (ライセンス注意)
-Java(TM) SE Development Kit 17          Oracle.JDK.17                  17.0.12.0  Tag: jdk winget
-# OpenJDKの有力貢献企業らしい
-Liberica JDK 17                         BellSoft.LibericaJDK.17        17.0.13.12          winget
-Liberica JDK 17 Full                    BellSoft.LibericaJDK.17.Full   17.0.13.12          winget
-# Microsoft 製 OpenJDK
-Microsoft Build of OpenJDK with Hotspo… Microsoft.OpenJDK.21           21.0.5.11           winget
-# 公式っぽいけどプロジェクトが終了して 17 までしか出ていない
-ojdkbuild OpenJDK 17                    ojdkbuild.openjdk.17.jdk       17.0030.6…          winget
 ```
 
 Windows の場合は gradlew.bat が全て自動でやってくれます。
@@ -97,42 +111,6 @@ Windows の場合は gradlew.bat が全て自動でやってくれます。
 ```bat
 gradlew.bat build
 ```
-
-## 実行方法
-
-Java Applet はコンパイルは (警告を出しながら) 通りますが、
-新しい環境では実行方法がありません。。
-appletviewer が入っている古い JDK をインストールして実行してください。
-
-それを何とかするのが本プロジェクトの目標です。
-
-以下のコマンドでデフォルトの Java Application が実行されます。
-
-```sh
-./gradle run
-```
-
-## Future Work
-
-* 案1
-  * 最近ポピュラーになってきた (要出典) Java byte code 実行時書き換え
-    (javaassist) を使ってスーパークラス java.applet.Applet を
-    自作の互換レイヤに書き換えてから JFrame か何かに add する。
-  * そもそも java.applet.Applet 自体が Deprecated でコンパイル警告が出ている。
-    いつ削除されてもおかしくない。その場合はコンパイル不能になる。
-  * 黒魔術
-* 案2
-  * オリジナルのソースコードに自動変換をかけて自作の互換レイヤに置き換えてから
-    コンパイルする。
-  * 面白くはないけど有力。
-  * Gradle でのやり方がよく分からない。Windows/Linux 両対応の観点からも、
-    多分 Java か Groovy で書けば何とかできるとは思う。
-* 案3
-  * オリジナルのソースコードをベースに普通に書き換える。
-  * これでよいのでは…。
-
-スーパー正男本体に関してはコンパイル済みバイトコードしかないので案1しかない。
-それか作者様にソースコードを直訴する。
 
 ## その他ビルドコマンド
 
