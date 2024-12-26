@@ -35,7 +35,10 @@ import io.github.yappy.mcutil.McParam;
 
 public class MainFrame extends JFrame {
 
-    private static final String SUPPORT_URL = "https://github.com/yappy/MasaoMakerSP";
+    private static final String TITLE = "まさおコンストラクション Desktop";
+    private static final String URL_SUPPORT = "https://github.com/yappy/MasaoMakerSP";
+    private static final String URL_ISSUES = "https://github.com/yappy/MasaoMakerSP/issues";
+    private static final String URL_LATEST = "https://github.com/yappy/MasaoMakerSP/releases/latest";
 
     private Properties versionInfo;
     private AppletMod appletMod = null;
@@ -45,7 +48,7 @@ public class MainFrame extends JFrame {
     private JRadioButtonMenuItem menuItem_3_0;
 
     public MainFrame() {
-        super("Masao Construction Desktop");
+        super(TITLE);
 
         loadVersionInfo();
 
@@ -111,12 +114,18 @@ public class MainFrame extends JFrame {
         menuBar.add(menu);
 
         item = new JMenuItem("サポートサイト (S)", KeyEvent.VK_S);
-        item.addActionListener(this::actionSite);
+        item.addActionListener(e -> actionOpenURL(URL_SUPPORT));
+        menu.add(item);
+        item = new JMenuItem("問題のレポート (I)", KeyEvent.VK_I);
+        item.addActionListener(e -> actionOpenURL(URL_ISSUES));
+        menu.add(item);
+        item = new JMenuItem("最新バージョンを確認 (L)", KeyEvent.VK_L);
+        item.addActionListener(e -> actionOpenURL(URL_LATEST));
         menu.add(item);
 
         menu.addSeparator();
 
-        item = new JMenuItem("このソフトウェアについて (A)", KeyEvent.VK_A);
+        item = new JMenuItem("バージョン情報 (A)", KeyEvent.VK_A);
         item.addActionListener(this::actionAbout);
         menu.add(item);
 
@@ -178,12 +187,12 @@ public class MainFrame extends JFrame {
         dispose();
     }
 
-    private void actionSite(ActionEvent ae) {
+    private void actionOpenURL(String url) {
         try {
             var desktop = Desktop.getDesktop();
-            desktop.browse(new URI(SUPPORT_URL));
+            desktop.browse(new URI(url));
         } catch (Exception e) {
-            var text = new JTextField(SUPPORT_URL);
+            var text = new JTextField(url);
             text.setEditable(false);
             JOptionPane.showMessageDialog(this, text, "ブラウザを開けません", JOptionPane.INFORMATION_MESSAGE);
         }
@@ -195,9 +204,9 @@ public class MainFrame extends JFrame {
         String hash = versionInfo.getProperty("versionHashfull", "unknown");
         String date = versionInfo.getProperty("versionDate", "unknown");
         var text = "%s\nBranch: %s\n%s\n%s".formatted(desc, branch, hash, date);
-        var area = new JTextArea("まさおコンストラクション Desktop\n\n" + text);
+        var area = new JTextArea(TITLE + "\n\n" + text);
         area.setEditable(false);
-        JOptionPane.showMessageDialog(this, area, "このソフトウェアについて", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, area, TITLE, JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void appMain(String... args) {
