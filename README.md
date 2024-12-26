@@ -12,11 +12,16 @@ Java Applet は新しい Java では既に非推奨→廃止されており、
 古い Java をインストールすれば appletviewer というツールで実行できる
 可能性がありますが、逆にそれ以外の方法がありません。
 
-![Screen Shot](ss.png)
+![Screen Shot 2.8](ss2.png)
+![Screen Shot 3.0](ss3.png)
 
 ## 実行方法
 
+以下よりダウンロード可能ですが、現状では JRE (Java Runtime Environment) の
+インストールが別途必要です。
+
 リリースページ: <https://github.com/yappy/MasaoMakerSP/releases>
+最新版: <https://github.com/yappy/MasaoMakerSP/releases/latest>
 
 * Windows なら `bin/app.bat`
 * Linux なら `bin/app`
