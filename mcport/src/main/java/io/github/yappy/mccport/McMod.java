@@ -114,7 +114,6 @@ public class McMod {
             cp.insertClassPath(cpath);
             // apply class name replacement
             CtClass ctc = cp.getAndRename(clsName, clsNameMod);
-            cp.removeClassPath(cpath);
             ctc.replaceClassName(classMap);
             // ctc.debugWriteFile("dbg");
         }
