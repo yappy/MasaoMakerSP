@@ -191,7 +191,7 @@ public class McMod {
         for (var name : INSTANCES.get(ver).sounds) {
             try {
                 AudioClip sound = new AudioClipImpl(
-                    Resources.getResource("%s/sound/%s".formatted(verstr, name)));
+                    Resources.toByteArray(Resources.getResource("%s/sound/%s".formatted(verstr, name))));
                 result.put(name, sound);
             } catch (Exception e) {
                 throw new RuntimeException(e);
