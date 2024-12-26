@@ -1,4 +1,4 @@
-package io.gihub.yappy.mcutil;
+package io.github.yappy.mcutil;
 
 import org.junit.Test;
 
@@ -78,9 +78,7 @@ public class McUtilTest {
     private List<McParam> parseOne(String charset, String path) throws IOException {
         String src = Files.readString(Paths.get(path), Charset.forName(charset));
         List<McParam> result = HtmlParser.parse(src);
-        for (var p : result) {
-            System.out.println(p);
-        }
+
         return result;
     }
 
