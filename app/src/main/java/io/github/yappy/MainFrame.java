@@ -1,6 +1,5 @@
 package io.github.yappy;
 
-import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -29,6 +28,7 @@ import javax.swing.JTextField;
 import com.google.common.io.Resources;
 
 import io.github.yappy.mccport.AppletMod;
+import io.github.yappy.mccport.AudioClipMod;
 import io.github.yappy.mccport.McMod;
 import io.github.yappy.mccport.McMod.McVersion;
 import io.github.yappy.mcutil.McParam;
@@ -140,7 +140,7 @@ public class MainFrame extends JFrame {
         Map<String, Image> images = McMod.getDefImages(getSelectedVersion());
         applet.setImage(images);
 
-        Map<String, AudioClip> sounds = McMod.getDefSounds(getSelectedVersion());
+        Map<String, AudioClipMod> sounds = McMod.getDefSounds(getSelectedVersion());
         applet.setSound(sounds);
     }
 

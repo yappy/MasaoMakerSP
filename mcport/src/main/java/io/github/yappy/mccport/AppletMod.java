@@ -3,7 +3,6 @@
  */
 package io.github.yappy.mccport;
 
-import java.applet.AudioClip;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Panel;
@@ -23,7 +22,7 @@ public abstract class AppletMod extends Panel implements Runnable {
     private SharedState sharedState = new SharedState();
     private Map<String, String> parameters = new HashMap<>();
     private Map<String, Image> images = new HashMap<>();
-    private Map<String, AudioClip> sounds = new HashMap<>();
+    private Map<String, AudioClipMod> sounds = new HashMap<>();
 
     public AppletMod() {
         super();
@@ -68,7 +67,7 @@ public abstract class AppletMod extends Panel implements Runnable {
         this.images.putAll(images);
     }
 
-    public void setSound(String name, AudioClip sound) {
+    public void setSound(String name, AudioClipMod sound) {
         synchronized (sharedState) {
             if (sharedState.isStarted) {
                 throw new IllegalStateException("already started");
@@ -77,7 +76,7 @@ public abstract class AppletMod extends Panel implements Runnable {
         sounds.put(name, sound);
     }
 
-    public void setSound(Map<String, AudioClip> sounds) {
+    public void setSound(Map<String, AudioClipMod> sounds) {
         synchronized (sharedState) {
             if (sharedState.isStarted) {
                 throw new IllegalStateException("already started");
@@ -155,7 +154,7 @@ public abstract class AppletMod extends Panel implements Runnable {
         return images.get(name);
     }
 
-    public AudioClip getAudioClip(URL url, String name) {
+    public AudioClipMod getAudioClip(URL url, String name) {
         System.out.printf("AppletMod getAudioClip: %s, %s%n", url, name);
         return sounds.get(name);
     }

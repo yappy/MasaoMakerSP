@@ -3,7 +3,6 @@
  */
 package io.github.yappy.mccport;
 
-import java.applet.AudioClip;
 import java.awt.Image;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -98,7 +97,8 @@ public class McMod {
         // replace class name map
         var classMap = new ClassMap();
         // inherit AppletMod instead of Applet
-        classMap.put("java.applet.Applet", "io.github.yappy.mccport.AppletMod");
+        classMap.put("java.applet.Applet", AppletMod.class.getName());
+        classMap.put("java.applet.AudioClip", AudioClipMod.class.getName());
         // move to separated package because class names are the same between MC version
         for (var clsName : classes) {
             classMap.put(clsName, PKG_CLS_FMT.formatted(verstr, clsName));
@@ -184,14 +184,14 @@ public class McMod {
         return result;
     }
 
-    public static Map<String, AudioClip> getDefSounds(McVersion ver) {
+    public static Map<String, AudioClipMod> getDefSounds(McVersion ver) {
         String verstr = INSTANCES.get(ver).verstr;
-        Map<String, AudioClip> result = new HashMap<>();
+        Map<String, AudioClipMod> result = new HashMap<>();
 
         for (var name : INSTANCES.get(ver).sounds) {
             try {
-                AudioClip sound = new AudioClipImpl(
-                    Resources.toByteArray(Resources.getResource("%s/sound/%s".formatted(verstr, name))));
+                var sound = new AudioClipImpl(
+                        Resources.toByteArray(Resources.getResource("%s/sound/%s".formatted(verstr, name))));
                 result.put(name, sound);
             } catch (Exception e) {
                 throw new RuntimeException(e);

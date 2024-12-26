@@ -1,6 +1,5 @@
 package io.github.yappy.mccport;
 
-import java.applet.AudioClip;
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -9,7 +8,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineEvent;
 
-public class AudioClipImpl implements AudioClip {
+public class AudioClipImpl implements AudioClipMod{
 
     private static AtomicBoolean errorOnce = new AtomicBoolean(false);
     private Clip clip = null;
