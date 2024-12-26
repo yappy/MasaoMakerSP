@@ -20,7 +20,7 @@ dependencies {
     testImplementation libs.junit
 
     // This dependency is used by the application.
-    implementation project(':mccport')
+    implementation project(':mcport')
     implementation libs.guava
 }
 
