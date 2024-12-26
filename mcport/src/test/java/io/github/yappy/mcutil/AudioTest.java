@@ -15,7 +15,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class AudioTest {
 
     @Test
-    //@Ignore("This test will fail if the system is headless or WSL")
+    @Ignore("This test will fail if the system is headless or WSL")
     public void init() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
         Clip clip = AudioSystem.getClip();
         AudioFormat format = clip.getFormat();

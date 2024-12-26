@@ -2,9 +2,6 @@ package io.github.yappy.mcutil;
 
 import org.junit.Test;
 
-import io.github.yappy.mcutil.HtmlParser;
-import io.github.yappy.mcutil.McParam;
-
 //import static org.junit.Assert.*;
 
 import java.io.IOException;
