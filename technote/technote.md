@@ -1,5 +1,104 @@
 # Technical Note
 
+## クラスファイル実行時変換
+
+javassist により、コンパイル済み Java バイトコードの実行時変換が
+身近で簡単なものとなった (要出典)。
+
+変換は主に `McMod.java` が行う。
+
+mcport プロジェクトにはリソースとして各バージョンのまさおコンストラクション
+クラスファイルを持たせている。
+この各ファイルを `ByteArrayClassPath` `ClassPool#insertClassPath()` を
+使って一度元のクラス名 (e.g. `MasaoConstruction`) で登録する。
+ただしバージョンが違っても同じクラス名なので、JVM のシステム的に同名クラスを
+2つ以上はロードできないため、後でクラス名 (パッケージ名) を変更する。
+
+次に、非推奨 (将来に削除予定) のクラスへの参照を差し替える。
+これは `ClassMap` というハッシュテーブルを `CtClass#replaceClassName()` に
+渡せば、自動でそのクラスファイル内のすべてのクラス参照を差し替えてくれる。
+ここで `<name>` => `io.github.yappy.<ver>.<name>` のようにバージョンごとの
+名前変更も行う (例: `io.github.yappy.mc2.MasaoConstruction`)。
+
+変換対象は `java.applet.Applet` と、効果音対応版の場合は追加で
+`java.applet.AudioClip` である。
+これらをそれぞれ自作の `AppletMod`, `AudioClipMod` に差し替える。
+`AppletMod` は `java.awt.Component#repaint()` 等のスーパークラスメソッド
+呼び出しをしていたりするのでいい感じのクラスを継承しておく(一敗)。
+
+`AudioClipMod` はインターフェイス呼び出しされるので、
+クラスにすると事故る(一敗)。
+インタフェース呼び出しは invokevirtual ではなく invokeinterface を使うからっぽい。
+
+Java のインスタンスメソッド呼び出しは全部仮想関数呼び出し (invokevirtual) なので
+継承先で定義されているのと同じ名前 (シグニチャ) のメソッドを定義しておけば
+オーバーライドされる。
+
+### メソッドのフック
+
+`MasaoConstruction` はゲーム進行用のスレッドを一本生成しているが、
+一つのアプレットで完結しないシステムでは片付けも必要になる。
+
+`MasaoConstruction` は `implements Runnable` しており `public void run()` が
+スレッドのエントリポイントだが、このメソッド名を `runHooked()` に変えてやることで
+実装/オーバーライドを外すことができる。
+`runHooked()` はリフレクションを使えば呼べるが面倒なので `AppletMod` に
+以下の抽象メソッドを追加してこちらをオーバーライドしたことにさせてやると便利。
+
+```java
+public abstract void runHooked();
+```
+
+あとは `AppletMod` に `implements Runnable` させてやればこちらが
+スレッドの開始に使われるようになる。
+実装は前後で小細工しつつ `runHooked()` を呼ぶようにする。
+ここは新規生成されたスレッドコンテキストで呼ばれるので `Thread.currentThread()` で
+`Thread` オブジェクトを取得できる。
+これに向かって `Thread#interrupt()` を呼べばゲームロジック中の `Thread.sleep()`
+呼び出しで `InterruptedException` が発生するためスレッドを終了させられる、はず。
+`MasaoConstruction#run()` は全体を `try {...} catch (Exception e) {}` で
+囲っているように見える。
+`InterruptedException` 以外もキャッチして何も言わずに終了してしまう点には注意。
+
+## 音声ファイルについて
+
+まず、WSL や Headless (NO GUI) 環境では音声デバイスが存在せず、実行時例外が出る。
+再生できないものはエラーだけ出して終了まではさせないべき。
+
+```sh
+$ file clear.au
+clear.au: Sun/NeXT audio data: 8-bit ISDN mu-law, mono, 8000 Hz
+```
+
+`*.au` は UNIX での標準的な音声ファイルフォーマット
+(Windows でいう `*.wav` に近い) で、
+当時 Applet ではこれしか動かなかった？ようだ。
+しかし現在の Java Audio API に入れると変換できないと言われてエラーになってしまう。
+
+```txt
+Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo,
+4 bytes/frame, big-endian is supported.
+```
+
+Windows での例外メッセージによると再生デバイス側のフォーマットは上記の通りで、
+まあまあ普通の符号付き整数 PCM のようだ。
+まさおコンストラクション 3.0 omake.zip に入っていたのは μ-law 形式で
+ダメらしい。
+
+`sound/` ディレクトリに sox ツールによる変換スクリプトを用意した。
+ファイル名 (拡張子含む) を変えるとアプレットパラメータとの兼ね合いが面倒なので
+`*.au` のまま中身を PCM とした。
+ファイル名をそのままにアプリケーションリソースに含めているのは変換後のものなので注意。
+`file` コマンドで確認できる。
+
+```sh
+$ sudo apt install sox
+$ cd sound
+$ ./sound.sh
+$ file ./pcm/clear.au
+./pcm/clear.au: Sun/NeXT audio data: 8-bit linear PCM [REF-PCM], mono, 8000 Hz
+```
+
 ## トラブル突破方法
 
 ### ClassFormatError
