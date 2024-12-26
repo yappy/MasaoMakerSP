@@ -18,14 +18,14 @@ public class AudioClipImpl implements AudioClip {
     private Clip clip;
 
     public AudioClipImpl(URL url) throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-        /*System.out.println("Create audio clip: " + url);
+        System.out.println("Create audio clip: " + url);
         Clip clip = AudioSystem.getClip();
         AudioFormat format = clip.getFormat();
         // Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported.
         try (var ais = AudioSystem.getAudioInputStream(format, AudioSystem.getAudioInputStream(url))) {
             clip.open(ais);
             this.clip = clip;
-        }*/
+        }
     }
 
     @Override
