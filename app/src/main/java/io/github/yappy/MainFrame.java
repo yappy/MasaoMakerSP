@@ -1,5 +1,6 @@
 package io.github.yappy;
 
+import java.applet.AudioClip;
 import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
@@ -130,7 +131,7 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void putDefaultParamAndImage(AppletMod applet) throws IOException {
+    private void putDefaultParamAndRes(AppletMod applet) throws IOException {
         List<McParam> params = McMod.getDefParams(getSelectedVersion());
         for (var param : params) {
             applet.setParameter(param.name(), param.value());
@@ -138,6 +139,9 @@ public class MainFrame extends JFrame {
 
         Map<String, Image> images = McMod.getDefImages(getSelectedVersion());
         applet.setImage(images);
+
+        Map<String, AudioClip> sounds = McMod.getDefSounds(getSelectedVersion());
+        applet.setSound(sounds);
     }
 
     private void onWindowClosing(WindowEvent we) {
@@ -160,7 +164,7 @@ public class MainFrame extends JFrame {
                 appletMod = null;
             }
             AppletMod appletMod = McMod.constructAppletMod(getSelectedVersion());
-            putDefaultParamAndImage(appletMod);
+            putDefaultParamAndRes(appletMod);
             this.appletMod = appletMod;
             add(appletMod);
             System.out.println(appletMod.getSize());

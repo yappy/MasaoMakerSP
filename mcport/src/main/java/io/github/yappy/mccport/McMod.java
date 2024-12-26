@@ -3,6 +3,7 @@
  */
 package io.github.yappy.mccport;
 
+import java.applet.AudioClip;
 import java.awt.Image;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -54,7 +55,8 @@ public class McMod {
                     "MainProgram", "MapSystem", "MasaoConstruction");
             List<String> images = ImmutableList.of(
                     "chizu.gif", "ending.gif", "gameover.gif", "pattern.gif", "title.gif");
-            mc2 = new McMod("mc2", classes, images);
+            List<String> sounds = ImmutableList.of();
+            mc2 = new McMod("mc2", classes, images, sounds);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -66,7 +68,10 @@ public class McMod {
                     "MainProgram", "MapSystem", "MasaoConstruction");
             List<String> images = ImmutableList.of(
                     "chizu.gif", "ending.gif", "gameover.gif", "haikei.gif", "mapchip.gif", "pattern.gif", "title.gif");
-            mc3 = new McMod("mc3", classes, images);
+            List<String> sounds = ImmutableList.of("bakuhatu.au", "clear.au", "coin.au", "dosun.au", "fumu.au",
+                    "gameover.au", "get.au", "happa.au", "item.au", "jump.au", "kiki.au", "mgan.au", "mizu.au",
+                    "shot.au", "sjump.au", "tobasu.au");
+            mc3 = new McMod("mc3", classes, images, sounds);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -78,13 +83,16 @@ public class McMod {
     private String verstr;
     // image file names in resources
     private List<String> images;
+    // sound file names in resources
+    private List<String> sounds;
     // Class<MasaoConstruction>
     private Class<?> class_mc = null;
 
-    private McMod(String verstr, List<String> classes, List<String> images)
+    private McMod(String verstr, List<String> classes, List<String> images, List<String> sounds)
             throws IOException, NotFoundException, CannotCompileException {
         this.verstr = verstr;
         this.images = images;
+        this.sounds = sounds;
         ClassPool cp = ClassPool.getDefault();
 
         // replace class name map
@@ -168,6 +176,23 @@ public class McMod {
             try {
                 Image img = ImageIO.read(Resources.getResource("%s/image/%s".formatted(verstr, name)));
                 result.put(name, img);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        return result;
+    }
+
+    public static Map<String, AudioClip> getDefSounds(McVersion ver) {
+        String verstr = INSTANCES.get(ver).verstr;
+        Map<String, AudioClip> result = new HashMap<>();
+
+        for (var name : INSTANCES.get(ver).sounds) {
+            try {
+                AudioClip sound = new AudioClipImpl(
+                    Resources.getResource("%s/sound/%s".formatted(verstr, name)));
+                result.put(name, sound);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
