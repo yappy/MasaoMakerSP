@@ -12,6 +12,9 @@ import java.util.Map;
 
 public abstract class AppletMod extends Panel implements Runnable {
 
+    private static final long GAME_THREAD_JOIN_TIMEOUT_MS = 100;
+    private static final long GAME_THREAD_JOIN_RETRY = 30;
+
     // must access with synchronized(this)
     private class SharedState {
         boolean isStarted = false;
@@ -119,21 +122,39 @@ public abstract class AppletMod extends Panel implements Runnable {
         System.out.println("AppletMod run end (runHooked was interrupted)");
     }
 
-    public void shutdown() {
+    public void shutdown() throws ThreadHangException {
+        Thread th;
         synchronized (sharedState) {
             if (!sharedState.isStarted) {
                 throw new IllegalStateException("not started");
             }
             sharedState.isExiting = true;
-            if (sharedState.mcThread != null) {
-                sharedState.mcThread.interrupt();
-            }
+            th = sharedState.mcThread;
         }
         // MasaoConstruction#stop() will do { this.th = null; }
         // It is meaningless...
         stop();
         // MasaoConstruction#destroy() will do nothing
         destroy();
+
+        if (th == null) {
+            return;
+        }
+        for (int i = 0; i < GAME_THREAD_JOIN_RETRY; i++) {
+            System.out.printf("Game thread interrupt (%d)%n", i + 1);
+            th.interrupt();
+            try {
+                th.join(GAME_THREAD_JOIN_TIMEOUT_MS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (!th.isAlive()) {
+                break;
+            }
+        }
+        if (th.isAlive()) {
+            throw new ThreadHangException("Thread Hang!");
+        }
     }
 
     // ----- java.applet.Applet compatible (Do not call directly) -----

@@ -30,6 +30,7 @@ import com.google.common.io.Resources;
 import io.github.yappy.mccport.AppletMod;
 import io.github.yappy.mccport.AudioClipMod;
 import io.github.yappy.mccport.McMod;
+import io.github.yappy.mccport.ThreadHangException;
 import io.github.yappy.mccport.McMod.McVersion;
 import io.github.yappy.mcutil.McParam;
 
@@ -157,10 +158,13 @@ public class MainFrame extends JFrame {
         try {
             if (appletMod != null) {
                 appletMod.shutdown();
-                gamePanel.remove(appletMod);
-                appletMod = null;
             }
+        }catch (ThreadHangException e) {
+            e.printStackTrace();
+            System.exit(1);
         } finally {
+            gamePanel.remove(appletMod);
+            appletMod = null;
             dispose();
         }
     }
