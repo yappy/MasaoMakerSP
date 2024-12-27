@@ -186,8 +186,8 @@ public class McMod {
         return result;
     }
 
-    public static List<McParam> getDefParams(McVersion ver) {
-        return getParam(ver, INSTANCES.get(ver).defParamName);
+    public static String getDefParamName(McVersion ver) {
+        return INSTANCES.get(ver).defParamName;
     }
 
     public static Map<String, Image> getDefImages(McVersion ver) {
