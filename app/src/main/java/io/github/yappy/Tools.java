@@ -6,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -15,8 +14,8 @@ import io.github.yappy.mcutil.McParam;
 
 public class Tools {
 
-    // ./gradlew run --args="--tools param SJIS ../original/mc2 ../mc2"
-    // ./gradlew run --args="--tools param UTF-8 ../original/mc3 ../mc3"
+    // ./gradlew run --args="--tools param SJIS ../original/mc2 ../mc2/param"
+    // ./gradlew run --args="--tools param UTF-8 ../original/mc3 ../mc3/param"
     private static void param(String[] args) throws Exception {
         var charset = args[0];
         var indir = Paths.get(args[1]);
@@ -32,7 +31,7 @@ public class Tools {
                 }
             });
         }
-        Collections.sort(inpaths);
+        inpaths.sort((a, b) -> a.getFileName().compareTo(b.getFileName()));
 
         Files.createDirectories(outdir);
         List<McParam> all = new ArrayList<>();
