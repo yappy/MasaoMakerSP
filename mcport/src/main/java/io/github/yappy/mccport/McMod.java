@@ -55,7 +55,7 @@ public class McMod {
             List<String> images = ImmutableList.of(
                     "chizu.gif", "ending.gif", "gameover.gif", "pattern.gif", "title.gif");
             List<String> sounds = ImmutableList.of();
-            mc2 = new McMod("mc2", classes, images, sounds);
+            mc2 = new McMod("mc2", classes, "game1", images, sounds);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -70,7 +70,7 @@ public class McMod {
             List<String> sounds = ImmutableList.of("bakuhatu.au", "clear.au", "coin.au", "dosun.au", "fumu.au",
                     "gameover.au", "get.au", "happa.au", "item.au", "jump.au", "kiki.au", "mgan.au", "mizu.au",
                     "shot.au", "sjump.au", "tobasu.au");
-            mc3 = new McMod("mc3", classes, images, sounds);
+            mc3 = new McMod("mc3", classes, "game_mt", images, sounds);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -80,6 +80,8 @@ public class McMod {
 
     // for resource dir and package replacement
     private String verstr;
+    //
+    private String defParamName;
     // image file names in resources
     private List<String> images;
     // sound file names in resources
@@ -87,9 +89,10 @@ public class McMod {
     // Class<MasaoConstruction>
     private Class<?> class_mc = null;
 
-    private McMod(String verstr, List<String> classes, List<String> images, List<String> sounds)
+    private McMod(String verstr, List<String> classes, String defParamName, List<String> images, List<String> sounds)
             throws IOException, NotFoundException, CannotCompileException {
         this.verstr = verstr;
+        this.defParamName = defParamName;
         this.images = images;
         this.sounds = sounds;
         ClassPool cp = ClassPool.getDefault();
@@ -144,27 +147,47 @@ public class McMod {
         }
     }
 
-    public static List<McParam> getDefParams(McVersion ver) {
+    public static List<String> getParamFiles(McVersion ver) {
         String verstr = INSTANCES.get(ver).verstr;
+
+        String src;
+        try {
+            src = Resources.toString(Resources.getResource("%s/param/list.txt".formatted(verstr)),
+                    Charsets.UTF_8);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        return src.lines().toList();
+    }
+
+    public static List<McParam> getParam(McVersion ver, String name) {
+        McMod inst = INSTANCES.get(ver);
+        String verstr = inst.verstr;
         List<McParam> result = new ArrayList<>();
 
         String src;
         try {
-            src = Resources.toString(Resources.getResource("%s/%sparam.txt".formatted(verstr, verstr)), Charsets.UTF_8);
+            src = Resources.toString(Resources.getResource("%s/param/%s.txt".formatted(verstr, name)),
+                    Charsets.UTF_8);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
 
         Scanner in = new Scanner(src);
         while (in.hasNextLine()) {
-            String name = in.nextLine();
+            String pname = in.nextLine();
             String value = in.nextLine();
             String comment = in.nextLine();
-            result.add(new McParam(name, value, comment));
+            result.add(new McParam(pname, value, comment));
         }
         in.close();
 
         return result;
+    }
+
+    public static List<McParam> getDefParams(McVersion ver) {
+        return getParam(ver, INSTANCES.get(ver).defParamName);
     }
 
     public static Map<String, Image> getDefImages(McVersion ver) {

@@ -14,8 +14,8 @@ import io.github.yappy.mcutil.McParam;
 
 public class Tools {
 
-    // ./gradlew run --args="--tools param SJIS ../original/mc2 ../mc2/param"
-    // ./gradlew run --args="--tools param UTF-8 ../original/mc3 ../mc3/param"
+    // ./gradlew run --args="--tools param SJIS ../original/mc2 ../mcport/src/main/resources/mc2/param"
+    // ./gradlew run --args="--tools param UTF-8 ../original/mc3 ../mcport/src/main/resources/mc3/param"
     private static void param(String[] args) throws Exception {
         var charset = args[0];
         var indir = Paths.get(args[1]);
@@ -38,8 +38,9 @@ public class Tools {
         var filelist = new StringBuilder();
         for (var inpath : inpaths) {
             var filename = inpath.getFileName().toString();
-            filename = filename.substring(0, filename.lastIndexOf(".html")) + ".txt";
-            filelist.append(filename).append('\n');
+            var woext = filename.substring(0, filename.lastIndexOf(".html"));
+            filename = woext + ".txt";
+            filelist.append(woext).append('\n');
             var outpath = outdir.resolve(filename);
             System.out.printf("%s -> %s%n", inpath, outpath);
 

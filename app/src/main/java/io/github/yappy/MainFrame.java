@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -44,6 +45,7 @@ public class MainFrame extends JFrame {
     private List<GameFrame> gameFrames = new ArrayList<>();
     private JRadioButtonMenuItem menuItem_2_8;
     private JRadioButtonMenuItem menuItem_3_0;
+    private JCheckBoxMenuItem menuItem_se;
 
     public MainFrame() {
         super(TITLE);
@@ -98,6 +100,9 @@ public class MainFrame extends JFrame {
         group.add(menuItem_3_0);
         menu.add(menuItem_2_8);
         menu.add(menuItem_3_0);
+
+        menuItem_se = new JCheckBoxMenuItem("効果音を強制 ON (3.0 でのみ有効) (S)", true);
+        menu.add(menuItem_se);
 
         menu.addSeparator();
 
@@ -162,6 +167,10 @@ public class MainFrame extends JFrame {
         try {
             AppletMod appletMod = McMod.constructAppletMod(getSelectedVersion());
             putDefaultParamAndRes(appletMod);
+            if (menuItem_se.isSelected()) {
+                appletMod.setParameter("se_switch", "1");
+            }
+
             var gameFrame = new GameFrame(appletMod);
             gameFrame.addWindowListener(new WindowAdapter() {
                 @Override
