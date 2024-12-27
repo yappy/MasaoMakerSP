@@ -1,6 +1,5 @@
 package io.github.yappy;
 
-import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -10,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -20,7 +20,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -30,7 +29,6 @@ import com.google.common.io.Resources;
 import io.github.yappy.mccport.AppletMod;
 import io.github.yappy.mccport.AudioClipMod;
 import io.github.yappy.mccport.McMod;
-import io.github.yappy.mccport.ThreadHangException;
 import io.github.yappy.mccport.McMod.McVersion;
 import io.github.yappy.mcutil.McParam;
 
@@ -42,9 +40,8 @@ public class MainFrame extends JFrame {
     private static final String URL_LATEST = "https://github.com/yappy/MasaoMakerSP/releases/latest";
 
     private Properties versionInfo;
-    private AppletMod appletMod = null;
 
-    private JPanel gamePanel;
+    private List<GameFrame> gameFrames = new ArrayList<>();
     private JRadioButtonMenuItem menuItem_2_8;
     private JRadioButtonMenuItem menuItem_3_0;
 
@@ -57,16 +54,14 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                onWindowClosing(e);
+                onWindowClosing();
             }
         });
         setLocationByPlatform(true);
 
         setJMenuBar(createMenuBar());
 
-        gamePanel = new JPanel(new BorderLayout());
-        gamePanel.setPreferredSize(new Dimension(McMod.MC_APPLET_W, McMod.MC_APPLET_H));
-        add(gamePanel);
+        getContentPane().setPreferredSize(new Dimension(McMod.MC_APPLET_W, McMod.MC_APPLET_H));
         pack();
         setResizable(false);
     }
@@ -154,41 +149,35 @@ public class MainFrame extends JFrame {
         applet.setSound(sounds);
     }
 
-    private void onWindowClosing(WindowEvent we) {
-        try {
-            if (appletMod != null) {
-                appletMod.shutdown();
+    private void onWindowClosing() {
+        for (var gameFrame : gameFrames) {
+            if (gameFrame.isVisible()) {
+                gameFrame.onWindowClosing();
             }
-        }catch (ThreadHangException e) {
-            e.printStackTrace();
-            System.exit(1);
-        } finally {
-            gamePanel.remove(appletMod);
-            appletMod = null;
-            dispose();
         }
+        System.exit(0);
     }
 
     private void actionStart(ActionEvent ae) {
         try {
-            if (appletMod != null) {
-                appletMod.shutdown();
-                gamePanel.remove(appletMod);
-                appletMod = null;
-            }
             AppletMod appletMod = McMod.constructAppletMod(getSelectedVersion());
             putDefaultParamAndRes(appletMod);
-            this.appletMod = appletMod;
-            add(appletMod);
-            System.out.println(appletMod.getSize());
-            appletMod.startup();
+            var gameFrame = new GameFrame(appletMod);
+            gameFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    gameFrames.remove(e.getWindow());
+                }
+            });
+            this.gameFrames.add(gameFrame);
+            gameFrame.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void actionExit(ActionEvent ae) {
-        dispose();
+        onWindowClosing();
     }
 
     private void actionOpenURL(String url) {
