@@ -27,6 +27,11 @@ dependencies {
     implementation libs.javassist
 }
 
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+
 // Apply a specific Java toolchain to ease working on different environments.
 java {
     toolchain {
