@@ -31,6 +31,10 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
+    - name: Install WiX
+      if: runner.os == 'Windows'
+      run: choco install wixtoolset
+
     - name: gradlew build
       run: ./${{ matrix.config.gradle }} -i build
 
