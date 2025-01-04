@@ -21,6 +21,7 @@ Java Applet は新しい Java では既に非推奨→廃止されており、
 インストールが別途必要です。
 
 リリースページ: <https://github.com/yappy/MasaoMakerSP/releases>
+
 最新版: <https://github.com/yappy/MasaoMakerSP/releases/latest>
 
 * Windows なら `bin/app.bat`
@@ -132,6 +133,39 @@ gradlew.bat build
 git clean -nxd
 # 全部消してきれいにする
 git clean -fxd
+```
+
+## jpackage
+
+最近の JDK に含まれている `jpackage` ツールにより、
+Windows Installer (*.msi) や Linux Debian package (*.deb) を作れます。
+
+```sh
+# jpackage コマンドラインを見るためには --info を指定
+./gradlew jpackage --info
+```
+
+### jpackage - Windows
+
+Windows の場合、インストーラ作成のために Wix が必要。
+しかし Wix は 3 から 4 で大きく変わってしまったため、3 のインストールが必要。
+Java 24 で新しい Wix に対応予定らしい…。
+Windows の機能の有効化が必要と言われた場合、管理者権限で実行する。
+
+```bat
+> winget search wix
+名前                                 ID                            バージョン  一致               ソース
+--------------------------------------------------------------------------------------------------------
+WiX Toolset Command-Line Tools       WiXToolset.WiXCLI             5.0.2.0     Command: wix       winget
+IsWiX                                IsWiX.IsWiX                   5.0.53.0    Tag: wix           winget
+WiX Toolset Additional Tools         WiXToolset.WiXAdditionalTools 5.0.2       Tag: wix           winget
+WiX Toolset                          WiXToolset.WiXToolset         3.14.1.8722 Tag: wix           winget
+
+> winget install WiXToolset.WiXToolset
+
+このパッケージには次の依存関係が必要です:
+  - Windows の機能
+      NetFx3
 ```
 
 ## Gradle のアップデート

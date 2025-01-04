@@ -53,9 +53,9 @@ ext.versionBranch = git('symbolic-ref', 'HEAD').trim()
 ext.versionHashfull = git('show', 'HEAD', '--no-patch', '--pretty=format:%H').trim()
 ext.versionDate = git('show', 'HEAD', '--no-patch', '--pretty=%as')
 version = versionDescribe
-// Debian package (*.deb) version
-def debVerMatch = versionDescribe =~ /\d+(?:\.\d+)*/
-ext.debVersion = debVerMatch ? debVerMatch[0] : '0.1.0'
+// Windows installer and Debian package accept *.*.*
+def simpleVerMatch = versionDescribe =~ /\d+(?:\.\d+)*/
+ext.simpleVersion = simpleVerMatch ? simpleVerMatch[0] : '0.1.0'
 
 task generateVersionFile {
     def versionFile = file("$buildDir/generated/resources/version.properties")
@@ -128,6 +128,19 @@ jpackage {
 
     linux {
         type = 'deb'
-        appVersion = debVersion
+        appVersion = simpleVersion
+    }
+    windows {
+        type = 'msi'
+        appVersion = simpleVersion
+
+        winDirChooser = true
+        winHelpUrl = 'https://github.com/yappy/MasaoMakerSP'
+        winMenu =  true
+        winMenuGroup = 'Masao Construction Desktop'
+        winPerUserInstall = true
+        winShortcut = true
+        winShortcutPrompt = true
+        winUpdateUrl = 'https://github.com/yappy/MasaoMakerSP/releases/latest'
     }
 }
