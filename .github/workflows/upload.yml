@@ -12,10 +12,23 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - os: 'ubuntu-latest'
+            gradle: 'gradlew'
+            dist: true
+          - os: 'windows-latest'
+            gradle: 'gradlew.bat'
+            dist: false
+
+    runs-on: ${{ matrix.config.os }}
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        fetch-tags: true
 
     - name: Set up JDK 17
       uses: actions/setup-java@v2
@@ -23,11 +36,21 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
-    # including test + distZip
-    - name: gradlew build
-      run: ./gradlew -i build
+    - name: Install WiX
+      if: runner.os == 'Windows'
+      run: choco install wixtoolset
 
-    - name: Upload
+    # including test + distZip
+    - name: gradlew jpackage
+      run: ./${{ matrix.config.gradle }} -i jpackage
+
+    - name: Upload dist
+      if: ${{ matrix.config.dist }}
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
       run: gh release upload ${{github.event.release.tag_name}} */build/distributions/*.zip
+
+    - name: Upload pkg
+      env:
+        GITHUB_TOKEN: ${{ github.TOKEN }}
+      run: gh release upload ${{github.event.release.tag_name}} */build/pkg/*.*
