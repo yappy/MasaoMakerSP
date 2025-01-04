@@ -12,9 +12,13 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        config:
+          - os: 'ubuntu-latest'
+            gradle: 'gradlew'
+          - os: 'windows-latest'
+            gradle: 'gradlew.bat'
 
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ matrix.config.os }}
 
     steps:
     - uses: actions/checkout@v2
@@ -26,8 +30,4 @@ jobs:
         distribution: 'adopt'
 
     - name: gradlew build
-      if: runner.os == 'Linux'
-      run: ./gradlew -i build
-    - name: gradlew.bat build
-      if: runner.os == 'Windows'
-      run: ./gradlew.bat -i build
+      run: ./${{ matrix.config.gradle }} -i build
