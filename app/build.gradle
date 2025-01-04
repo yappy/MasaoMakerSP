@@ -8,6 +8,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'org.panteleyev.jpackageplugin' version '1.6.0'
 }
 
 repositories {
@@ -52,6 +53,9 @@ ext.versionBranch = git('symbolic-ref', 'HEAD').trim()
 ext.versionHashfull = git('show', 'HEAD', '--no-patch', '--pretty=format:%H').trim()
 ext.versionDate = git('show', 'HEAD', '--no-patch', '--pretty=%as')
 version = versionDescribe
+// Debian package (*.deb) version
+def debVerMatch = versionDescribe =~ /\d+(?:\.\d+)*/
+ext.debVersion = debVerMatch ? debVerMatch[0] : '0.1.0'
 
 task generateVersionFile {
     def versionFile = file("$buildDir/generated/resources/version.properties")
@@ -80,5 +84,50 @@ jar {
         attributes(
             'Implementation-Version' : version
         )
+    }
+}
+
+task("copyDependencies", type: Copy) {
+    from(configurations.runtimeClasspath).into("$buildDir/jars")
+}
+
+task("copyJar", type: Copy) {
+    from(tasks.jar).into("$buildDir/jars")
+}
+
+jpackage {
+    dependsOn("build", "copyDependencies", "copyJar")
+
+    input  = "$buildDir/jars"
+    destination = "$buildDir/pkg"
+
+    mainJar = tasks.jar.archiveFileName.get()
+    mainClass = application.mainClass.get()
+    javaOptions = application.applicationDefaultJvmArgs
+
+    // --name
+    appName = 'mcdesktop'
+    // --app-version = version (default)
+    copyright = 'Copyright (c) 2021-2025 yappy'
+    // --description
+    appDescription = 'Masao Construction Desktop'
+    // icon = ''
+    // --vendor
+    vendor = "yappy"
+
+    // --about-url
+    aboutUrl = 'https://github.com/yappy/MasaoMakerSP'
+    // --app-image
+    // appImage = ''
+    // --license-file
+    licenseFile = "$rootDir/LICENSE"
+    // --runtime-image
+    // runtimeImage = ''
+
+    //verbose = true
+
+    linux {
+        type = 'deb'
+        appVersion = debVersion
     }
 }
