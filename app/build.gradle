@@ -43,9 +43,14 @@ application {
 }
 
 def git(...args) {
-    def proc = "git ${args.join(' ')}".execute()
+    def argsJoined = args.join(' ')
+    project.logger.info("EXEC: git ${argsJoined}")
+    def proc = "git ${argsJoined}".execute()
     proc.waitFor()
-    return proc.text.trim()
+    def result = proc.text.trim()
+    project.logger.info("RESULT: ${result}")
+
+    return result
 }
 
 ext.versionDescribe = git('describe', '--tags', '--always', '--dirty').trim()
@@ -53,9 +58,11 @@ ext.versionBranch = git('symbolic-ref', 'HEAD').trim()
 ext.versionHashfull = git('show', 'HEAD', '--no-patch', '--pretty=format:%H').trim()
 ext.versionDate = git('show', 'HEAD', '--no-patch', '--pretty=%as')
 version = versionDescribe
+project.logger.info("version: ${version}")
 // Windows installer and Debian package accept *.*.*
 def simpleVerMatch = versionDescribe =~ /\d+(?:\.\d+)*/
 ext.simpleVersion = simpleVerMatch ? simpleVerMatch[0] : '0.1.0'
+project.logger.info("package-version: ${simpleVersion}")
 
 task generateVersionFile {
     def versionFile = file("$buildDir/generated/resources/version.properties")
