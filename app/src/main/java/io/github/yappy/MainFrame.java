@@ -1,8 +1,8 @@
 package io.github.yappy;
 
-import java.awt.BorderLayout;
 import java.awt.Desktop;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -10,20 +10,24 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import com.google.common.io.Resources;
 
@@ -41,11 +45,15 @@ public class MainFrame extends JFrame {
     private static final String URL_LATEST = "https://github.com/yappy/MasaoMakerSP/releases/latest";
 
     private Properties versionInfo;
-    private AppletMod appletMod = null;
 
-    private JPanel gamePanel;
+    private List<GameFrame> gameFrames = new ArrayList<>();
     private JRadioButtonMenuItem menuItem_2_8;
     private JRadioButtonMenuItem menuItem_3_0;
+    private JCheckBoxMenuItem menuItem_se;
+    private JMenu menuSample;
+
+    private JTable table;
+    private DefaultTableModel tableModel;
 
     public MainFrame() {
         super(TITLE);
@@ -56,18 +64,27 @@ public class MainFrame extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                onWindowClosing(e);
+                onWindowClosing();
             }
         });
         setLocationByPlatform(true);
 
         setJMenuBar(createMenuBar());
 
-        gamePanel = new JPanel(new BorderLayout());
-        gamePanel.setPreferredSize(new Dimension(McMod.MC_APPLET_W, McMod.MC_APPLET_H));
-        add(gamePanel);
+        String[] colLabels = { "Param Name", "Value", "Help" };
+        this.tableModel = new DefaultTableModel(colLabels, 0);
+        this.table = new JTable(tableModel);
+        table.setFont(new Font(Font.MONOSPACED, Font.PLAIN, table.getFont().getSize()));
+        table.getColumnModel().getColumn(0).setMinWidth(150);
+        table.getColumnModel().getColumn(0).setMaxWidth(150);
+        table.getColumnModel().getColumn(1).setMinWidth(500);
+        table.getColumnModel().getColumn(1).setMaxWidth(500);
+        add(new JScrollPane(table));
+
+        onChangeSelectedVersion();
+
+        getContentPane().setPreferredSize(new Dimension(1280, 720));
         pack();
-        setResizable(false);
     }
 
     private void loadVersionInfo() {
@@ -98,16 +115,25 @@ public class MainFrame extends JFrame {
         group = new ButtonGroup();
         menuItem_2_8 = new JRadioButtonMenuItem("まさおコンストラクション 2.8", true);
         menuItem_3_0 = new JRadioButtonMenuItem("まさおコンストラクション 3.0");
+        menuItem_2_8.addActionListener(e -> onChangeSelectedVersion());
+        menuItem_3_0.addActionListener(e -> onChangeSelectedVersion());
         group.add(menuItem_2_8);
         group.add(menuItem_3_0);
         menu.add(menuItem_2_8);
         menu.add(menuItem_3_0);
+
+        menuItem_se = new JCheckBoxMenuItem("効果音を強制 ON (3.0 でのみ有効) (S)", true);
+        menu.add(menuItem_se);
 
         menu.addSeparator();
 
         item = new JMenuItem("終了 (X)", KeyEvent.VK_X);
         item.addActionListener(this::actionExit);
         menu.add(item);
+
+        menuSample = new JMenu("サンプル (S)");
+        menuSample.setMnemonic(KeyEvent.VK_S);
+        menuBar.add(menuSample);
 
         menu = new JMenu("ヘルプ (H)");
         menu.setMnemonic(KeyEvent.VK_H);
@@ -140,10 +166,50 @@ public class MainFrame extends JFrame {
         }
     }
 
-    private void putDefaultParamAndRes(AppletMod applet) throws IOException {
-        List<McParam> params = McMod.getDefParams(getSelectedVersion());
+    private void onChangeSelectedVersion() {
+        loadDefaultParams();
+        updateSampleMenu();
+    }
+
+    private void updateSampleMenu() {
+        McVersion ver = getSelectedVersion();
+
+        menuSample.removeAll();
+        List<String> files = McMod.getParamFiles(ver);
+        for (var name : files) {
+            var item = new JMenuItem(name);
+            item.setActionCommand(name);
+            item.addActionListener(ae -> {
+                loadSampleParams(ae.getActionCommand());
+            });
+            menuSample.add(item);
+        }
+    }
+
+    private void loadSampleParams(String name) {
+        McVersion ver = getSelectedVersion();
+        List<McParam> params = McMod.getParam(ver, name);
+
+        tableModel.setRowCount(0);
         for (var param : params) {
-            applet.setParameter(param.name(), param.value());
+            tableModel.addRow(new Object[] { param.name(), param.value(), param.comment() });
+        }
+        table.getColumnModel().getColumn(0).setPreferredWidth(100);
+        table.getColumnModel().getColumn(1).setPreferredWidth(200);
+    }
+
+    private void loadDefaultParams() {
+        McVersion ver = getSelectedVersion();
+        String name = McMod.getDefParamName(ver);
+
+        loadSampleParams(name);
+    }
+
+    private void putParamAndRes(AppletMod applet) throws IOException {
+        for (int y = 0; y < tableModel.getRowCount(); y++) {
+            String name = tableModel.getValueAt(y, 0).toString();
+            String value = tableModel.getValueAt(y, 1).toString();
+            applet.setParameter(name, value);
         }
 
         Map<String, Image> images = McMod.getDefImages(getSelectedVersion());
@@ -153,38 +219,39 @@ public class MainFrame extends JFrame {
         applet.setSound(sounds);
     }
 
-    private void onWindowClosing(WindowEvent we) {
-        try {
-            if (appletMod != null) {
-                appletMod.shutdown();
-                gamePanel.remove(appletMod);
-                appletMod = null;
+    private void onWindowClosing() {
+        for (var gameFrame : gameFrames) {
+            if (gameFrame.isVisible()) {
+                gameFrame.onWindowClosing();
             }
-        } finally {
-            dispose();
         }
+        System.exit(0);
     }
 
     private void actionStart(ActionEvent ae) {
         try {
-            if (appletMod != null) {
-                appletMod.shutdown();
-                gamePanel.remove(appletMod);
-                appletMod = null;
-            }
             AppletMod appletMod = McMod.constructAppletMod(getSelectedVersion());
-            putDefaultParamAndRes(appletMod);
-            this.appletMod = appletMod;
-            add(appletMod);
-            System.out.println(appletMod.getSize());
-            appletMod.startup();
+            putParamAndRes(appletMod);
+            if (menuItem_se.isSelected()) {
+                appletMod.setParameter("se_switch", "1");
+            }
+
+            var gameFrame = new GameFrame(appletMod);
+            gameFrame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    gameFrames.remove(e.getWindow());
+                }
+            });
+            this.gameFrames.add(gameFrame);
+            gameFrame.setVisible(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     private void actionExit(ActionEvent ae) {
-        dispose();
+        onWindowClosing();
     }
 
     private void actionOpenURL(String url) {

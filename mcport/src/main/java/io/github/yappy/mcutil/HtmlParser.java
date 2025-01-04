@@ -2,6 +2,7 @@ package io.github.yappy.mcutil;
 
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -23,6 +24,29 @@ public class HtmlParser {
         }
 
         return parser.getResult();
+    }
+
+    public static void merge(List<McParam> list, List<McParam> additional) {
+        var map = new LinkedHashMap<String, McParam>();
+        for (var param : list) {
+            map.put(param.name(), param);
+        }
+        for (var param : additional) {
+            map.putIfAbsent(param.name(), param);
+        }
+        list.clear();
+        list.addAll(map.values());
+    }
+
+    public static String toString(List<McParam> list) {
+        var result = new StringBuilder();
+        for (var param : list) {
+            result.append(param.name()).append('\n');
+            result.append(param.value()).append('\n');
+            result.append(param.comment()).append('\n');
+        }
+
+        return result.toString();
     }
 
     private static class Parser extends ParserCallback {
