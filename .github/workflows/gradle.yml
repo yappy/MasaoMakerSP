@@ -31,3 +31,6 @@ jobs:
 
     - name: gradlew build
       run: ./${{ matrix.config.gradle }} -i build
+
+    - name: gradlew jpackage
+      run: ./${{ matrix.config.gradle }} -i jpackage
