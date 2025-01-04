@@ -23,6 +23,9 @@ jobs:
             dist: false
 
     runs-on: ${{ matrix.config.os }}
+    defaults:
+      run:
+        shell:  bash
 
     steps:
     - uses: actions/checkout@v4
@@ -48,9 +51,9 @@ jobs:
       if: ${{ matrix.config.dist }}
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
-      run: gh release upload ${{github.event.release.tag_name}} app/build/distributions/*.zip
+      run: gh release upload ${{github.event.release.tag_name}} */build/distributions/*.zip
 
     - name: Upload pkg
       env:
         GITHUB_TOKEN: ${{ github.TOKEN }}
-      run: gh release upload ${{github.event.release.tag_name}} app/build/pkg/*.*
+      run: gh release upload ${{github.event.release.tag_name}} */build/pkg/*.*

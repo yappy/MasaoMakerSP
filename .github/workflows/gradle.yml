@@ -19,6 +19,9 @@ jobs:
             gradle: 'gradlew.bat'
 
     runs-on: ${{ matrix.config.os }}
+    defaults:
+      run:
+        shell:  bash
 
     steps:
     - uses: actions/checkout@v4
