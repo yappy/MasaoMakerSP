@@ -1,6 +1,6 @@
 # MasaoMakerSP
 
-[![Java CI with Gradle](https://github.com/yappy/MasaoMakerSP/actions/workflows/gradle.yml/badge.svg)](https://github.com/yappy/MasaoMakerSP/actions/workflows/gradle.yml)
+[![Auto Build and Check](https://github.com/yappy/MasaoMakerSP/actions/workflows/build.yml/badge.svg)](https://github.com/yappy/MasaoMakerSP/actions/workflows/build.yml)
 
 まさおメーカーSP
 
@@ -9,27 +9,56 @@
 
 Java Applet は新しい Java では既に非推奨→廃止されており、
 ブラウザ用の Java Plug-in も無くなっているため、基本的に実行環境がありません。
-古い Java をインストールすれば appletviewer というツールで実行できる
-可能性がありますが、逆にそれ以外の方法がありません。
+非推奨 API の使用を回避しつつ、Java デスクトップアプリケーションの形で
+実行可能にします。
 
 ![Screen Shot 2.8](ss2.png)
 ![Screen Shot 3.0](ss3.png)
 
 ## 実行方法
 
-以下よりダウンロード可能ですが、現状では JRE (Java Runtime Environment) の
-インストールが別途必要です。
+以下よりダウンロード可能です。
 
-リリースページ: <https://github.com/yappy/MasaoMakerSP/releases>
-
+リリースページ: <https://github.com/yappy/MasaoMakerSP/releases> \
 最新版: <https://github.com/yappy/MasaoMakerSP/releases/latest>
 
-* Windows なら `bin/app.bat`
-* Linux なら `bin/app`
+v0.1.3-alpha よりインストーラパッケージに対応しました。
+実行に必要な Java ランタイムも同時にインストールされます。
+
+* `*.msi`: Windows 用インストーラ
+* `*.deb`: Linux Debian (Ubuntu) 用インストーラ
+* `*.zip`: Java ランタイムなしインストーラなし版 (全 OS 用)
 
 ## ステータス
 
+* :heavy_check_mark: まさおコンストラクション 2.8 の実行
+* :heavy_check_mark: まさおコンストラクション 3.0 の実行
+* :x: まさおメーカー SP の実行
+
 <https://github.com/yappy/MasaoMakerSP/issues/3>
+
+## ディレクトリ構成 (ここから開発者向け)
+
+* `gradle/`, `gradlew`, `gradlew.bat`
+* `settings.gradle`
+* `app/`
+  * Java Application プロジェクト。
+* `mcport/`
+  * MasaoConstruction のデスクトップアプリケーション向け移植。
+  * Java Library プロジェクト。
+* `original/`
+  * 移植元ファイルをなるべくそのままの形で保持している。
+  * `mc2`
+  * `mc3`
+  * `mmsp`
+* `scripts/`
+  * 主にオリジナルデータに対して処理をかけるスクリプト群。
+  * `dis/`
+    * MasaoConstruction に対してディスアセンブルをかける。
+  * `sound/`
+    * MasaoConstruction 3.0 の効果音データを無難なフォーマットに変換する。
+* `technote/`
+  * 技術的なノート。
 
 ## Install Java
 
@@ -81,7 +110,7 @@ sudo apt install default-jdk
 java -version
 ```
 
-## ビルド方法 (ここから開発者向け)
+## ビルド方法
 
 Gradle 8.11.1
 
@@ -200,7 +229,7 @@ title.gif にある「このゲームは、転載自由です。」のメッセ�
 
 * original/
   * mc_c.zip
-    * コンパイル済み .class のみ。ソース公開はなし。
+    * コンパイル済み `*.class` のみ。ソース公開はなし。
   * title.gif
   * pattern.gif
   * ending.gif
