@@ -37,7 +37,30 @@ v0.1.3-alpha よりインストーラパッケージに対応しました。
 
 <https://github.com/yappy/MasaoMakerSP/issues/3>
 
-## Install Java (ここから開発者向け)
+## ディレクトリ構成 (ここから開発者向け)
+
+* `gradle/`, `gradlew`, `gradlew.bat`
+* `settings.gradle`
+* `app/`
+  * Java Application プロジェクト。
+* `mcport/`
+  * MasaoConstruction のデスクトップアプリケーション向け移植。
+  * Java Library プロジェクト。
+* `original/`
+  * 移植元ファイルをなるべくそのままの形で保持している。
+  * `mc2`
+  * `mc3`
+  * `mmsp`
+* `scripts/`
+  * 主にオリジナルデータに対して処理をかけるスクリプト群。
+  * `dis/`
+    * MasaoConstruction に対してディスアセンブルをかける。
+  * `sound/`
+    * MasaoConstruction 3.0 の効果音データを無難なフォーマットに変換する。
+* `technote/`
+  * 技術的なノート。
+
+## Install Java
 
 ### Windows
 
