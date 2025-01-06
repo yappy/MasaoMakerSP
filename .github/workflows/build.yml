@@ -53,3 +53,10 @@ jobs:
 
     - name: gradlew jpackage
       run: ./${{ matrix.config.gradle }} -i jpackage
+
+    - name: Archive artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: |
+          **/build/reports/tests/test/
