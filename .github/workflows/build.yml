@@ -57,6 +57,6 @@ jobs:
     - name: Archive artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: test-report
+        name: test-report-${{ matrix.config.os }}
         path: |
           **/build/reports/tests/test/
