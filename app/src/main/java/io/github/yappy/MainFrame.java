@@ -31,10 +31,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.google.common.io.Resources;
 
-import io.github.yappy.mccport.AppletMod;
-import io.github.yappy.mccport.AudioClipMod;
-import io.github.yappy.mccport.McMod;
-import io.github.yappy.mccport.McMod.McVersion;
+import io.github.yappy.mcport.AppletMod;
+import io.github.yappy.mcport.AudioClipMod;
+import io.github.yappy.mcport.McMod;
+import io.github.yappy.mcport.McMod.McVersion;
 import io.github.yappy.mcutil.McParam;
 
 public class MainFrame extends JFrame {
@@ -175,8 +175,8 @@ public class MainFrame extends JFrame {
         McVersion ver = getSelectedVersion();
 
         menuSample.removeAll();
-        List<String> files = McMod.getParamFiles(ver);
-        for (var name : files) {
+        List<String> names = McMod.getParamNames(ver);
+        for (var name : names) {
             var item = new JMenuItem(name);
             item.setActionCommand(name);
             item.addActionListener(ae -> {
