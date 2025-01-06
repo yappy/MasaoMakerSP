@@ -12,8 +12,8 @@ Java Applet は新しい Java では既に非推奨→廃止されており、
 非推奨 API の使用を回避しつつ、Java デスクトップアプリケーションの形で
 実行可能にします。
 
-![Screen Shot 2.8](ss2.png)
-![Screen Shot 3.0](ss3.png)
+![Screen Shot 2.8](ss/ss2.png)
+![Screen Shot 3.0](ss/ss3.png)
 
 ## 実行方法
 
