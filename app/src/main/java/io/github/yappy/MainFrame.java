@@ -113,8 +113,8 @@ public class MainFrame extends JFrame {
         menu.addSeparator();
 
         group = new ButtonGroup();
-        menuItem_2_8 = new JRadioButtonMenuItem("まさおコンストラクション 2.8", true);
-        menuItem_3_0 = new JRadioButtonMenuItem("まさおコンストラクション 3.0");
+        menuItem_2_8 = new JRadioButtonMenuItem("まさおコンストラクション 2.8");
+        menuItem_3_0 = new JRadioButtonMenuItem("まさおコンストラクション 3.0", true);
         menuItem_2_8.addActionListener(e -> onChangeSelectedVersion());
         menuItem_3_0.addActionListener(e -> onChangeSelectedVersion());
         group.add(menuItem_2_8);
