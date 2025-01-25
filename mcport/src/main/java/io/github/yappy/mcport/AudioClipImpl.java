@@ -1,4 +1,4 @@
-package io.github.yappy.mccport;
+package io.github.yappy.mcport;
 
 import java.io.ByteArrayInputStream;
 import java.util.concurrent.atomic.AtomicBoolean;

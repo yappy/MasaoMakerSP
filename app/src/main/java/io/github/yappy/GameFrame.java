@@ -7,9 +7,9 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import io.github.yappy.mccport.AppletMod;
-import io.github.yappy.mccport.McMod;
-import io.github.yappy.mccport.ThreadHangException;
+import io.github.yappy.mcport.AppletMod;
+import io.github.yappy.mcport.McMod;
+import io.github.yappy.mcport.ThreadHangException;
 
 public class GameFrame extends JFrame {
 

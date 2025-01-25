@@ -1,4 +1,4 @@
-package io.github.yappy.mccport;
+package io.github.yappy.mcport;
 
 public class ThreadHangException extends Exception {
 

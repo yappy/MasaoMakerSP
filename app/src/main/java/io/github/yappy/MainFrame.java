@@ -31,10 +31,10 @@ import javax.swing.table.DefaultTableModel;
 
 import com.google.common.io.Resources;
 
-import io.github.yappy.mccport.AppletMod;
-import io.github.yappy.mccport.AudioClipMod;
-import io.github.yappy.mccport.McMod;
-import io.github.yappy.mccport.McMod.McVersion;
+import io.github.yappy.mcport.AppletMod;
+import io.github.yappy.mcport.AudioClipMod;
+import io.github.yappy.mcport.McMod;
+import io.github.yappy.mcport.McMod.McVersion;
 import io.github.yappy.mcutil.McParam;
 
 public class MainFrame extends JFrame {
@@ -110,11 +110,15 @@ public class MainFrame extends JFrame {
         item.addActionListener(this::actionStart);
         menu.add(item);
 
+        item = new JMenuItem("遊び方 (H)", KeyEvent.VK_H);
+        item.addActionListener(this::actionHelp);
+        menu.add(item);
+
         menu.addSeparator();
 
         group = new ButtonGroup();
-        menuItem_2_8 = new JRadioButtonMenuItem("まさおコンストラクション 2.8", true);
-        menuItem_3_0 = new JRadioButtonMenuItem("まさおコンストラクション 3.0");
+        menuItem_2_8 = new JRadioButtonMenuItem("まさおコンストラクション 2.8");
+        menuItem_3_0 = new JRadioButtonMenuItem("まさおコンストラクション 3.0", true);
         menuItem_2_8.addActionListener(e -> onChangeSelectedVersion());
         menuItem_3_0.addActionListener(e -> onChangeSelectedVersion());
         group.add(menuItem_2_8);
@@ -175,8 +179,8 @@ public class MainFrame extends JFrame {
         McVersion ver = getSelectedVersion();
 
         menuSample.removeAll();
-        List<String> files = McMod.getParamFiles(ver);
-        for (var name : files) {
+        List<String> names = McMod.getParamNames(ver);
+        for (var name : names) {
             var item = new JMenuItem(name);
             item.setActionCommand(name);
             item.addActionListener(ae -> {
@@ -248,6 +252,16 @@ public class MainFrame extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void actionHelp(ActionEvent ae) {
+        String help = McMod.getHelp(getSelectedVersion());
+        var text = new JTextArea(help);
+        text.setLineWrap(true);
+        text.setEditable(false);
+        var scroll = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setPreferredSize(new Dimension(640, 380));
+        JOptionPane.showMessageDialog(this, scroll, "遊び方", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void actionExit(ActionEvent ae) {
