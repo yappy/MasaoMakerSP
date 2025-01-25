@@ -110,6 +110,10 @@ public class MainFrame extends JFrame {
         item.addActionListener(this::actionStart);
         menu.add(item);
 
+        item = new JMenuItem("遊び方 (H)", KeyEvent.VK_H);
+        item.addActionListener(this::actionHelp);
+        menu.add(item);
+
         menu.addSeparator();
 
         group = new ButtonGroup();
@@ -248,6 +252,16 @@ public class MainFrame extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void actionHelp(ActionEvent ae) {
+        String help = McMod.getHelp(getSelectedVersion());
+        var text = new JTextArea(help);
+        text.setLineWrap(true);
+        text.setEditable(false);
+        var scroll = new JScrollPane(text, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setPreferredSize(new Dimension(640, 380));
+        JOptionPane.showMessageDialog(this, scroll, "遊び方", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void actionExit(ActionEvent ae) {
